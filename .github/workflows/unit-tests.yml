@@ -16,7 +16,4 @@ jobs:
         run: |
           npm i
           npm run bootstrap
-          npm run link
           npm run test
-        env:
-          CI: true
