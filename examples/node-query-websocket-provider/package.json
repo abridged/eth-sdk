@@ -9,7 +9,7 @@
   "dependencies": {
     "@types/node": "^12.7.12",
     "@types/ws": "^6.0.3",
-    "eth-sdk": "^0.1.0-alpha.2",
+    "eth-sdk": "^0.1.0-alpha.3",
     "ws": "^7.1.2"
   }
 }

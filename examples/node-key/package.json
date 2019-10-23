@@ -10,7 +10,7 @@
     "@types/ganache-core": "^2.1.2",
     "@types/node": "^12.7.12",
     "@types/node-fetch": "^2.5.2",
-    "eth-sdk": "^0.1.0-alpha.2",
+    "eth-sdk": "^0.1.0-alpha.3",
     "ganache-core": "^2.8.0",
     "node-fetch": "^2.6.0"
   }
