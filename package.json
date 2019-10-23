@@ -17,7 +17,7 @@
   },
   "scripts": {
     "lint": "lerna run --stream lint",
-    "bootstrap": "lerna bootstrap -- --no-package-lock --no-ci",
+    "bootstrap": "lerna bootstrap --force-local",
     "prebuild": "lerna run bootstrap",
     "build": "lerna run --stream build",
     "precompile-watch": "npm run build",
