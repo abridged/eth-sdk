@@ -1,0 +1,21 @@
+name: unit-tests
+on: [push]
+jobs:
+  start:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install, lint and test
+        run: |
+          npm i
+          npm run lint
+          npm run test
+        env:
+          CI: true
