@@ -1,6 +1,7 @@
 # Eth sdk monorepo
 
 [![lerna][lerna-image]][lerna-url]
+[![GitHub actions][actions-image]][actions-url]
 [![license][license-image]][license-url]
 
 **Note, this package is experimental.**
@@ -26,5 +27,7 @@
 
 [lerna-image]: https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg
 [lerna-url]: https://lerna.js.org/
+[actions-image]: https://github.com/etherspot/eth-sdk/workflows/unit-tests/badge.svg
+[actions-url]: https://github.com/etherspot/eth-sdk/actions
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-url]: ./LICENSE
