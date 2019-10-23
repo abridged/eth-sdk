@@ -1,7 +1,7 @@
 {
   "name": "node-query-websocket-provider",
   "private": true,
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "main": "./main.js",
   "scripts": {
     "start": "node ./"
@@ -9,7 +9,7 @@
   "dependencies": {
     "@types/node": "^12.7.12",
     "@types/ws": "^6.0.3",
-    "eth-sdk": "^0.1.0-alpha.1",
+    "eth-sdk": "^0.1.0-alpha.2",
     "ws": "^7.1.2"
   }
 }
