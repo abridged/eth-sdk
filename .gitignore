@@ -1,0 +1,12 @@
+*.
+!.gitignore
+!.npmignore
+
+*.log
+npm-debug.log*
+lerna-debug.log*
+
+build
+node_modules
+
+

@@ -1,0 +1,52 @@
+{
+  "name": "@eth-sdk/utils",
+  "version": "0.0.1",
+  "description": "Eth sdk utils",
+  "author": {
+    "name": "Stanislaw Glogowski",
+    "email": "hello@newobject.pl"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/etherspot/eth-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/etherspot/eth-sdk/issues"
+  },
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "scripts": {
+    "lint": "tslint --project ./tsconfig.json --exclude ./src/**/*.d.ts ./src/**/*.ts",
+    "clean": "rimraf ./build",
+    "prebuild": "npm run clean",
+    "build": "npm run compile",
+    "compile": "tsc --project ./tsconfig.build.json --rootDir ./src",
+    "compile-watch": "npm run compile -- --watch --preserveWatchOutput",
+    "test": "jest --passWithNoTests",
+    "test-watch": "jest --watchAll --passWithNoTests"
+  },
+  "dependencies": {
+    "@types/bn.js": "^4.11.5",
+    "@types/node": "^12.0.0",
+    "@types/secp256k1": "^3.5.0",
+    "bn.js": "^4.11.8",
+    "js-sha3": "^0.8.0",
+    "secp256k1": "^3.7.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.19",
+    "jest": "^24.9.0",
+    "rimraf": "^3.0.0",
+    "ts-jest": "^24.1.0",
+    "tslint": "^5.20.0",
+    "tslint-config-airbnb": "^5.11.2",
+    "tsutils": "^3.17.1",
+    "typescript": "^3.6.4"
+  },
+  "jest": {
+    "verbose": true,
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  }
+}

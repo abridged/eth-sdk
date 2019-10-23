@@ -1,0 +1,41 @@
+{
+  "name": "eth-sdk",
+  "version": "0.0.1",
+  "description": "Eth sdk",
+  "author": {
+    "name": "Stanislaw Glogowski",
+    "email": "hello@newobject.pl"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/etherspot/eth-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/etherspot/eth-sdk/issues"
+  },
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "scripts": {
+    "lint": "tslint --project ./tsconfig.json --exclude ./src/**/*.d.ts ./src/**/*.ts",
+    "clean": "rimraf ./build",
+    "prebuild": "npm run clean",
+    "build": "npm run compile",
+    "compile": "tsc --project ./tsconfig.json --rootDir ./src",
+    "compile-watch": "npm run compile -- --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@eth-sdk/contract": "^0.0.1",
+    "@eth-sdk/key": "^0.0.1",
+    "@eth-sdk/query": "^0.0.1",
+    "@eth-sdk/utils": "^0.0.1",
+    "@types/node": "^12.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.0",
+    "tslint": "^5.20.0",
+    "tslint-config-airbnb": "^5.11.2",
+    "tsutils": "^3.17.1",
+    "typescript": "^3.6.4"
+  }
+}
