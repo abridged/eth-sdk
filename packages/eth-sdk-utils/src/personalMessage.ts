@@ -38,7 +38,7 @@ export function recoverPublicKeyFromPersonalMessage(message: TData, signature: s
 
   const signatureBuff = toBuffer(signature);
   const s = signatureBuff.slice(0, -1);
-  const r = signatureBuff[signatureBuff.length - 1] - 27;
+  const r = signatureBuff[signatureBuff.length - 1];
 
   let result: string = null;
 
