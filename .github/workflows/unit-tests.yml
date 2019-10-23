@@ -12,10 +12,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install, bootstrap, lint and test
+      - name: npm install, bootstrap, link, lint and test
         run: |
           npm i
           npm run bootstrap
+          npm run link
           npm run test
         env:
           CI: true
