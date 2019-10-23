@@ -16,8 +16,8 @@
     "url": "https://github.com/etherspot/eth-sdk/issues"
   },
   "scripts": {
+    "version-up": "lerna version --no-push",
     "lint": "lerna run --stream lint",
-    "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
     "prebuild": "lerna run bootstrap",
     "build": "lerna run --stream build",
