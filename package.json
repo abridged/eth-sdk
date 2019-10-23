@@ -15,7 +15,6 @@
   "bugs": {
     "url": "https://github.com/etherspot/eth-sdk/issues"
   },
-  "main": "main.js",
   "scripts": {
     "lint": "lerna run --stream lint",
     "bootstrap": "lerna bootstrap -- --no-package-lock",
@@ -29,8 +28,5 @@
   },
   "dependencies": {
     "lerna": "^3.8.5"
-  },
-  "devDependencies": {
-    "@types/node": "^12.7.12"
   }
 }

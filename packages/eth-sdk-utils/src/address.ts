@@ -1,6 +1,12 @@
 import { HEX_PREFIX } from './constants';
-import { isHex, getHexBytesSize, concatHex } from './hex';
+import { isHex, getHexBytesSize, concatHex, randomHex } from './hex';
 import { keccak256 } from './keccak';
+
+export function randomAddress(): string {
+  return toChecksumAddress(
+    randomHex(20),
+  );
+}
 
 export function isAddress(value: string): boolean {
   return (

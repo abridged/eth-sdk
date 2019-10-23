@@ -62,7 +62,15 @@ export function decode<T = { [key: string]: any }>(params: IItemParam[], data: s
     data = data.slice(2);
 
     for (let i = 0; i < params.length; i += 1) {
-      const { type, name } = params[i];
+      const { type } = params[i];
+      let { name } = params[i];
+
+      if (!name) {
+        name = 'result';
+      } else if (name.startsWith('_')) {
+        name = name.slice(1);
+      }
+
       let paramData = data.slice(i * 64, (i + 1) * 64);
 
       if (
@@ -102,7 +110,7 @@ export function decode<T = { [key: string]: any }>(params: IItemParam[], data: s
 
       result = {
         ...result,
-        [name.startsWith('_') ? name.slice(1) : name]: value,
+        [name]: value,
       };
     }
   }
