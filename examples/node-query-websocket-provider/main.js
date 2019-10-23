@@ -45,13 +45,13 @@ async function main() {
       console.log('query.subscription.newPendingTransactions$:', result);
     });
 
+  await sleep(30000); // sleep for 30 sec.
+
   // unsubscribe:
   await newHeads$.unsubscribe();
 
   // unsubscribe all:
   await query.subscription.unsubscribeAll();
-
-  await sleep(30000);
 
   await provider.disconnect();
 }
