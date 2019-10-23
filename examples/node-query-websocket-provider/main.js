@@ -1,4 +1,4 @@
-const { Query, queryProviders } = require('eth-sdk');
+const { Query, queryProviders, sleep } = require('eth-sdk');
 const WebSocket = require('ws');
 
 async function main() {
@@ -13,7 +13,7 @@ async function main() {
 
   const query = new Query(provider);
 
-  console.log('net.version:', await query.net.version);
+  console.log('query.net.version:', await query.net.version);
 
   const newHeads$ = await query.subscription.create(
     'newHeads',
@@ -32,21 +32,28 @@ async function main() {
 
   newHeads$
     .subscribe((result) => {
-      console.log('newHeads$', result);
+      console.log('query.subscription.newHeads$', result);
     });
 
   logs$
     .subscribe((result) => {
-      console.log('logs$:', result);
+      console.log('query.subscription.logs$:', result);
     });
 
-  // newPendingTransactions$
-  //   .subscribe((result) => {
-  //     console.log('newPendingTransactions$:', result);
-  //   });
+  newPendingTransactions$
+    .subscribe((result) => {
+      console.log('query.subscription.newPendingTransactions$:', result);
+    });
 
   // unsubscribe:
-  // await subscription$.unsubscribe();
+  await newHeads$.unsubscribe();
+
+  // unsubscribe all:
+  await query.subscription.unsubscribeAll();
+
+  await sleep(30000);
+
+  await provider.disconnect();
 }
 
 main()

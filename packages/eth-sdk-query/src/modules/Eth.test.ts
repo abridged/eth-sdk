@@ -3,6 +3,7 @@ import { Eth } from './Eth';
 
 describe('Eth', () => {
   test('gasPrice', async () => {
-    await expect(eth.gasPrice).resolves.toBe('10000000000000');
+    const gasPrice = await eth.gasPrice;
+    expect(gasPrice.toNumber()).toBe(0x1e18cc3f0310);
   });
 });

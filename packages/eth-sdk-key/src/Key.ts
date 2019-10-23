@@ -2,7 +2,12 @@ import HDNode from 'hdkey';
 import {
   mnemonicToSeedSync,
 } from 'bip39';
-import { IQuery, WithQuery, queryProviders } from '@eth-sdk/query';
+import {
+  IQuery,
+  WithQuery,
+  queryProviders,
+  queryModules,
+} from '@eth-sdk/query';
 import {
   toHex,
   randomPrivateKey,
@@ -11,9 +16,12 @@ import {
   privateToPublicKey,
   signPersonalMessage,
   TData,
+  TQuantity,
+  toChecksumAddress, toBuffer,
 } from '@eth-sdk/utils';
+import { Transaction } from 'ethereumjs-tx';
 
-export class Key extends WithQuery implements queryProviders.RootProvider.IExtension {
+export class Key extends WithQuery implements queryProviders.IProviderExtension {
   private static DEFAULT_HD_PATH = 'm/44\'/60\'/0\'/0';
 
   public static createRandom(query: IQuery = null): Key {
@@ -94,10 +102,6 @@ export class Key extends WithQuery implements queryProviders.RootProvider.IExten
       ));
 
       this.type = Key.Types.Local;
-
-      if (query) {
-
-      }
     } else if (query) {
       this.address = this.query.eth.accounts.then(([address]) => address);
       this.type = Key.Types.Network;
@@ -116,6 +120,10 @@ export class Key extends WithQuery implements queryProviders.RootProvider.IExten
         break;
 
       case Key.Types.Network:
+        result = await this.query.eth.sign(
+          await this.address,
+          toHex(message),
+        );
         break;
 
       default:
@@ -125,8 +133,108 @@ export class Key extends WithQuery implements queryProviders.RootProvider.IExten
     return result;
   }
 
-  public replaceSend(method: string, params: any[]): Promise<any> {
+  public async signTransaction(options: Key.ISignTransactionOptions): Promise<string> {
+    let result: string = null;
+
+    if (this.type === Key.Types.Local) {
+      const {
+        to,
+        value,
+        data,
+      } = options;
+
+      let {
+        nonce,
+        gasPrice,
+        gasLimit,
+      } = options;
+
+      if (!nonce) {
+        nonce = await this.query.eth.getTransactionCount(await this.address, 'pending');
+      }
+
+      if (!gasPrice) {
+        gasPrice = await this.query.eth.gasPrice;
+      }
+
+      if (!gasLimit) {
+        gasLimit = 21000;
+      }
+
+      const transaction = new Transaction({
+        to,
+        nonce: toHex(nonce, '0x00', true),
+        gasPrice: toHex(gasPrice, '0x00', true),
+        gasLimit: toHex(gasLimit, '0x00', true),
+        value: toHex(value, '0x00', true),
+        data: toHex(data, '0x'),
+      });
+
+      transaction.sign(toBuffer(this.privateKey));
+
+      result = toHex(transaction.serialize());
+    } else {
+      throw new Error('invalid key');
+    }
+
+    return result;
+  }
+
+  public async extendProvider(method: string, params: any[]): Promise<any> {
     let result: any = null;
+
+    if (this.type === Key.Types.Local) {
+      switch (method) {
+        case queryModules.Eth.Methods.Accounts: {
+          result = [await this.address];
+          break;
+        }
+
+        case queryModules.Eth.Methods.Sign: {
+          let address: string;
+          let data: string;
+
+          ([address, data] = params);
+
+          address = toChecksumAddress(address);
+
+          if (address === await this.address) {
+            result = await this.signPersonalMessage(data);
+          }
+          break;
+        }
+
+        case queryModules.Eth.Methods.SendTransaction: {
+          let options: queryModules.Eth.ISendTransactionOptions;
+          ([options] = params);
+
+          const {
+            from,
+            to,
+            data,
+            value,
+            nonce,
+            gas: gasLimit,
+            gasPrice,
+          } = options;
+
+          if (from === await this.address) {
+
+            const raw = await this.signTransaction({
+              to,
+              nonce,
+              data,
+              value,
+              gasLimit,
+              gasPrice,
+            });
+
+            result = await this.query.eth.sendRawTransaction(raw);
+          }
+          break;
+        }
+      }
+    }
 
     return result;
   }
@@ -150,5 +258,14 @@ export namespace Key {
   export interface IFromMnemonicOptionsMany extends IFromMnemonicOptions {
     fromIndex?: number;
     toIndex?: number;
+  }
+
+  export interface ISignTransactionOptions {
+    nonce?: TQuantity;
+    gasPrice?: TQuantity;
+    gasLimit?: TQuantity;
+    to: string;
+    value?: TQuantity;
+    data?: TData;
   }
 }

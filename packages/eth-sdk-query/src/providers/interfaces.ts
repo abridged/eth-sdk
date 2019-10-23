@@ -36,3 +36,7 @@ export namespace IProvider {
 
   export type TCallback = (err: any, response?: IJsonRpcResponse) => void;
 }
+
+export interface IProviderExtension {
+  extendProvider(method: string, params: any[]): Promise<any>;
+}

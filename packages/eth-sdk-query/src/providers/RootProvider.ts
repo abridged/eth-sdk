@@ -1,10 +1,11 @@
 import { Subject } from 'rxjs';
-import { IProvider } from './interfaces';
+import { IProvider, IProviderExtension } from './interfaces';
+import { TProviderRawExtension, TProviderExtension } from './types';
 
 export class RootProvider implements IProvider {
   private currentProvider: IProvider;
 
-  private extensions: RootProvider.TExtension[] = [];
+  private extensions: TProviderExtension[] = [];
 
   public get connected$(): Subject<boolean> {
     return this.innerProvider.connected$;
@@ -14,23 +15,23 @@ export class RootProvider implements IProvider {
     return this.innerProvider.notification$;
   }
 
-  public addExtension(...extensions: RootProvider.TExtension[]): this {
+  public addExtension(...extensions: TProviderExtension[]): this {
     this.extensions.push(
       ...extensions,
     );
     return this;
   }
 
-  public addExtensions(...extensions: RootProvider.TExtension[]): this {
+  public addExtensions(...extensions: TProviderExtension[]): this {
     return this.addExtension(...extensions);
   }
 
-  public removeExtension(...extensions: RootProvider.TExtension[]): this {
+  public removeExtension(...extensions: TProviderExtension[]): this {
     this.extensions = this.extensions.filter(extension => !extensions.includes(extension));
     return this;
   }
 
-  public removeExtensions(...extensions: RootProvider.TExtension[]): this {
+  public removeExtensions(...extensions: TProviderExtension[]): this {
     return this.removeExtension(...extensions);
   }
 
@@ -61,14 +62,14 @@ export class RootProvider implements IProvider {
         for (let extension of this.extensions) {
           switch (typeof extension) {
             case 'function':
-              extension = extension as RootProvider.TRawExtension;
+              extension = extension as TProviderRawExtension;
               result = await extension(method, params);
               break;
 
             case 'object':
-              extension = extension as RootProvider.IExtension;
-              if (extension && extension.replaceSend) {
-                result = await extension.replaceSend(method, params);
+              extension = extension as IProviderExtension;
+              if (extension && extension.extendProvider) {
+                result = await extension.extendProvider(method, params);
               }
               break;
           }
@@ -110,14 +111,5 @@ export class RootProvider implements IProvider {
         }
       });
     });
-  }
-}
-
-export namespace RootProvider {
-  export type TExtension = TRawExtension | IExtension;
-  export type TRawExtension = (method: string, params: any[]) => Promise<any>;
-
-  export interface IExtension {
-    replaceSend(method: string, params: any[]): Promise<any>;
   }
 }

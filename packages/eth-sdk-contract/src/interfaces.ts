@@ -37,6 +37,8 @@ export namespace IContract {
 
     call(options?: Partial<queryModules.Eth.ICallOptions>): Promise<T>;
 
-    send(): Promise<string>;
+    estimate(options?: Partial<queryModules.Eth.ICallOptions>): Promise<number>;
+
+    send(options?: Partial<queryModules.Eth.ISendTransactionOptions>): Promise<string>;
   }
 }

@@ -1,5 +1,5 @@
 import { IQuery, WithQuery, queryModules } from '@eth-sdk/query';
-import { abi, keccak256, concatHex, isAddress } from '@eth-sdk/utils';
+import { abi, keccak256, concatHex, isAddress, toChecksumAddress } from '@eth-sdk/utils';
 import { IContract } from './interfaces';
 
 export class ContractFactory<T = null, E = null> extends WithQuery {
@@ -18,7 +18,7 @@ export class ContractFactory<T = null, E = null> extends WithQuery {
     let hasEvents = false;
 
     const result: IContract = {
-      address,
+      address: toChecksumAddress(address),
       events: {},
       methods: {},
     };
@@ -49,6 +49,10 @@ export class ContractFactory<T = null, E = null> extends WithQuery {
             return {
               data,
               call: async (options: Partial<queryModules.Eth.ICallOptions> = {}) => {
+                if (!constant) {
+                  throw new Error('unsupported');
+                }
+
                 let { to } = options;
 
                 if (!to) {
@@ -59,10 +63,6 @@ export class ContractFactory<T = null, E = null> extends WithQuery {
                   throw new Error('invalid contract address');
                 }
 
-                if (!constant) {
-                  throw new Error('unsupported');
-                }
-
                 const output = await this.query.eth.call({
                   to,
                   data,
@@ -70,10 +70,67 @@ export class ContractFactory<T = null, E = null> extends WithQuery {
 
                 return abi.decode(outputs, output);
               },
-              send: async () => {
+              estimate: async (options: Partial<queryModules.Eth.ICallOptions> = {}) => {
                 if (constant) {
                   throw new Error('unsupported');
                 }
+
+                const {
+                  from,
+                  gasPrice,
+                  gas,
+                  value,
+                } = options;
+                let { to } = options;
+
+                if (!to) {
+                  to = result.address;
+                }
+
+                if (!to || !isAddress(to)) {
+                  throw new Error('invalid contract address');
+                }
+
+                return this.query.eth.estimateGas({
+                  from,
+                  to,
+                  gas,
+                  gasPrice,
+                  value,
+                  data,
+                });
+              },
+              send: async (options: Partial<queryModules.Eth.ISendTransactionOptions> = {}) => {
+                if (constant) {
+                  throw new Error('unsupported');
+                }
+
+                const {
+                  from,
+                  gasPrice,
+                  gas,
+                  nonce,
+                  value,
+                } = options;
+                let { to } = options;
+
+                if (!to) {
+                  to = result.address;
+                }
+
+                if (!to || !isAddress(to)) {
+                  throw new Error('invalid contract address');
+                }
+
+                return this.query.eth.sendTransaction({
+                  from,
+                  to,
+                  gas,
+                  gasPrice,
+                  nonce,
+                  value,
+                  data,
+                });
               },
             };
           };

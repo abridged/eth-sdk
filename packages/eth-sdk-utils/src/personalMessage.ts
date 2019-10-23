@@ -1,14 +1,17 @@
 import { sign, recover } from 'secp256k1';
 import { toBuffer } from './buffer';
-import { concatHex, toHex } from './hex';
+import { concatHex, toHex, getHexBytesSize, padHexLeft } from './hex';
 import { keccak256 } from './keccak';
 import { publicKeyToAddress, verifyPublicKey } from './secp256k1';
 import { TData } from './types';
 
 export function hashPersonalMessage(message: TData): string {
+  const hex = toHex(message);
+  const size = getHexBytesSize(hex);
+
   return keccak256(
-    '\x19Ethereum Signed Message:\n32',
-    keccak256(message),
+    `\x19Ethereum Signed Message:\n${size}`,
+    hex,
   );
 }
 
@@ -19,7 +22,7 @@ export function signPersonalMessage(message: TData, privateKey: string): string 
 
   return concatHex(
     signature,
-    recovery + 27,
+    padHexLeft(recovery, 1),
   );
 }
 

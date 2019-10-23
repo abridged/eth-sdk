@@ -9,7 +9,7 @@ async function main() {
 
   const query = new Query(provider);
 
-  console.log('net.version:', await query.net.version);
+  console.log('query.net.version:', await query.net.version);
 }
 
 main()

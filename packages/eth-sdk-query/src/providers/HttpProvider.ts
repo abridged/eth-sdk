@@ -43,7 +43,7 @@ export class HttpProvider implements IProvider {
 
 export namespace HttpProvider {
   export interface IOptions {
-    fetch?: TFetch;
+    fetch?: any;
   }
 
   export type TFetch = (input?: Request | string, init?: RequestInit) => Promise<Response>;

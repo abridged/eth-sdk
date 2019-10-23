@@ -57,7 +57,7 @@ export function padHexRight(value: any, bytes: number = 32) {
   return padHex(value, bytes, 'right');
 }
 
-export function toHex(value: any, defaultValue = '0x'): string {
+export function toHex(value: any, defaultValue = '0x', forceEven = false): string {
   let result: string = null;
 
   if (!isEmpty(value)) {
@@ -89,6 +89,10 @@ export function toHex(value: any, defaultValue = '0x'): string {
       if (result) {
         result = `${HEX_PREFIX}${result}`;
       }
+    }
+
+    if (result && forceEven && result.length % 2 !== 0) {
+      result = `${HEX_PREFIX}0${result.slice(2)}`;
     }
   }
 

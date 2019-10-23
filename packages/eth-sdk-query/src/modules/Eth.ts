@@ -1,6 +1,4 @@
 import BN from 'bn.js';
-import { Subject } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
 import {
   isTag,
   toHex,
@@ -60,9 +58,9 @@ export class Eth {
     return {
       blockHash,
       hash,
-      from,
-      to,
       input,
+      from: toChecksumAddress(from),
+      to: toChecksumAddress(to),
       blockNumber: toNumber(blockNumber),
       index: toNumber(index),
       gas: toNumber(gas),
@@ -111,9 +109,10 @@ export class Eth {
 
   public get accounts(): Promise<string[]> {
     return this.query
-      .send(
+      .send<string[]>(
         Eth.Methods.Accounts,
-      );
+      )
+      .then(accounts => accounts.map(account => toChecksumAddress(account)));
   }
 
   public get blockNumber(): Promise<number> {
@@ -128,7 +127,7 @@ export class Eth {
     return this.query
       .send(
         Eth.Methods.GetBalance,
-        address,
+        toChecksumAddress(address),
         isTag(tag) ? tag : toHex(tag),
       )
       .then(raw => toBN(raw));
@@ -138,7 +137,7 @@ export class Eth {
     return this.query
       .send(
         Eth.Methods.GetStorageAt,
-        address,
+        toChecksumAddress(address),
         toHex(position),
         isTag(tag) ? tag : toHex(tag),
       );
@@ -148,7 +147,7 @@ export class Eth {
     return this.query
       .send(
         Eth.Methods.GetTransactionCount,
-        address,
+        toChecksumAddress(address),
         isTag(tag) ? tag : toHex(tag),
       )
       .then(raw => toNumber(raw));
@@ -176,7 +175,7 @@ export class Eth {
     return this.query
       .send(
         Eth.Methods.GetCode,
-        address,
+        toChecksumAddress(address),
         isTag(tag) ? tag : toHex(tag),
       );
   }
@@ -185,7 +184,7 @@ export class Eth {
     return this.query
       .send(
         Eth.Methods.Sign,
-        address,
+        toChecksumAddress(address),
         toHex(data),
       );
   }
@@ -205,8 +204,8 @@ export class Eth {
       .send(
         Eth.Methods.SendTransaction,
         cleanEmpty({
-          from,
-          to,
+          from: toChecksumAddress(from),
+          to: toChecksumAddress(to),
           gas: toHex(gas, null),
           gasPrice: toHex(gasPrice, null),
           value: toHex(value, null),
@@ -238,8 +237,8 @@ export class Eth {
       .send(
         Eth.Methods.Call,
         cleanEmpty({
-          from,
-          to,
+          from: toChecksumAddress(from),
+          to: toChecksumAddress(to),
           gas: toHex(gas, null),
           gasPrice: toHex(gasPrice, null),
           value: toHex(value, null),
@@ -263,8 +262,8 @@ export class Eth {
       .send(
         Eth.Methods.EstimateGas,
         cleanEmpty({
-          from,
-          to,
+          from: toChecksumAddress(from),
+          to: toChecksumAddress(to),
           gas: toHex(gas, null),
           gasPrice: toHex(gasPrice, null),
           value: toHex(value, null),
@@ -337,7 +336,7 @@ export class Eth {
         } = raw;
 
         return {
-          contractAddress,
+          contractAddress: toChecksumAddress(contractAddress),
           cumulativeGasUsed: toNumber(cumulativeGasUsed),
           gasUsed: toNumber(gasUsed),
           logs: logs.map(log => Eth.prepareLogResult(log)),
