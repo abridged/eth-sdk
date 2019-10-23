@@ -1,6 +1,6 @@
 {
   "name": "eth-sdk",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.3",
   "description": "Eth sdk",
   "author": {
     "name": "Stanislaw Glogowski",
@@ -25,10 +25,10 @@
     "compile-watch": "npm run compile -- --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "@eth-sdk/contract": "^0.1.0-alpha.1",
-    "@eth-sdk/key": "^0.1.0-alpha.1",
-    "@eth-sdk/query": "^0.1.0-alpha.1",
-    "@eth-sdk/utils": "^0.1.0-alpha.1",
+    "@eth-sdk/contract": "^0.1.0-alpha.3",
+    "@eth-sdk/key": "^0.1.0-alpha.3",
+    "@eth-sdk/query": "^0.1.0-alpha.3",
+    "@eth-sdk/utils": "^0.1.0-alpha.3",
     "@types/node": "^12.0.0"
   },
   "devDependencies": {
