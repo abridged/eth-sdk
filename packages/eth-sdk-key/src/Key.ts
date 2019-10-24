@@ -155,7 +155,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
       if (!nonce) {
         nonce = await this.query.eth.getTransactionCount(await this.address, 'pending');
 
-        if (this.nonce >= nonce) {
+        if (this.nonce !== null && this.nonce >= nonce) {
           nonce = this.nonce + 1;
         }
 

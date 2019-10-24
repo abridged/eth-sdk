@@ -51,9 +51,9 @@ export function computeCreate2Address(creator: string, salt: string, byteCode: s
 
     const payload = concatHex(
       '0xff',
-      creator.toLowerCase(),
-      salt.toLowerCase(),
-      byteCode.toLowerCase(),
+      creator,
+      salt,
+      byteCode,
     );
 
     result = toChecksumAddress(
