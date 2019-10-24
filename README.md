@@ -17,8 +17,10 @@
 ## Examples
 
 * [(node.js) key ganache provider](./examples/node-key-ganache-provider)
+* [(node.js) key http provider](./examples/node-key-http-provider)
 * [(node.js) query http provider](./examples/node-query-http-provider)
 * [(node.js) query websocket provider](./examples/node-query-websocket-provider)
+* [(react) app](./examples/react-app)
 * [(node.js + typescript) contract](./examples/ts-node-contract)
 
 ## License
