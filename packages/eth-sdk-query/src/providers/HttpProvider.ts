@@ -6,11 +6,11 @@ export class HttpProvider implements IProvider {
 
   constructor(
     private endpoint: string,
-    private options: HttpProvider.IOptions = {},
+    options: HttpProvider.IOptions = {},
   ) {
     this.fetch = typeof fetch !== 'undefined'
       ? fetch
-      : this.options.fetch;
+      : options.fetch;
 
     if (!this.fetch) {
       new Error('fetch not found. Please use `node-fetch` via options.fetch');

@@ -209,7 +209,7 @@ export class Eth {
           gas: toHex(gas, null),
           gasPrice: toHex(gasPrice, null),
           value: toHex(value, null),
-          data: toHex(data, null),
+          data: toHex(data, '0x'),
           nonce: toHex(nonce, null),
         }),
       );
@@ -475,7 +475,7 @@ export namespace Eth {
     gas?: TQuantity;
     gasPrice?: TQuantity;
     value?: TQuantity;
-    data: TData;
+    data?: TData;
     nonce?: TQuantity;
   }
 

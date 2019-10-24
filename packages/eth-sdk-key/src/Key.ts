@@ -17,12 +17,15 @@ import {
   signPersonalMessage,
   TData,
   TQuantity,
-  toChecksumAddress, toBuffer,
+  toChecksumAddress, toBuffer, toNumber,
 } from '@eth-sdk/utils';
 import { Transaction } from 'ethereumjs-tx';
+import Common from 'ethereumjs-common';
 
 export class Key extends WithQuery implements queryProviders.IProviderExtension {
   private static DEFAULT_HD_PATH = 'm/44\'/60\'/0\'/0';
+
+  private nonce: number = null;
 
   public static createRandom(query: IQuery = null): Key {
     return new Key(
@@ -146,28 +149,51 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
       let {
         nonce,
         gasPrice,
-        gasLimit,
+        gas,
       } = options;
 
       if (!nonce) {
         nonce = await this.query.eth.getTransactionCount(await this.address, 'pending');
+
+        if (this.nonce >= nonce) {
+          nonce = this.nonce + 1;
+        }
+
+        this.nonce = nonce;
+      } else {
+        this.nonce = toNumber(nonce);
       }
 
       if (!gasPrice) {
         gasPrice = await this.query.eth.gasPrice;
       }
 
-      if (!gasLimit) {
-        gasLimit = 21000;
+      if (!gas) {
+        gas = 21000;
+      }
+
+      const chainId = await this.query.net.version;
+
+      let common: Common = null;
+      try {
+        common = new Common(chainId);
+      } catch (err) {
+        common = Common.forCustomChain(1, {
+          chainId,
+          networkId: chainId,
+          comment: 'Custom chain',
+        }, 'petersburg');
       }
 
       const transaction = new Transaction({
         to,
         nonce: toHex(nonce, '0x00', true),
+        gasLimit: toHex(gas, '0x00', true),
         gasPrice: toHex(gasPrice, '0x00', true),
-        gasLimit: toHex(gasLimit, '0x00', true),
         value: toHex(value, '0x00', true),
         data: toHex(data, '0x'),
+      }, {
+        common,
       });
 
       transaction.sign(toBuffer(this.privateKey));
@@ -214,7 +240,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
             data,
             value,
             nonce,
-            gas: gasLimit,
+            gas,
             gasPrice,
           } = options;
 
@@ -225,7 +251,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
               nonce,
               data,
               value,
-              gasLimit,
+              gas,
               gasPrice,
             });
 
@@ -262,8 +288,8 @@ export namespace Key {
 
   export interface ISignTransactionOptions {
     nonce?: TQuantity;
+    gas?: TQuantity;
     gasPrice?: TQuantity;
-    gasLimit?: TQuantity;
     to: string;
     value?: TQuantity;
     data?: TData;
