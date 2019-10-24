@@ -1,5 +1,5 @@
 {
-  "name": "node-query-http-provider",
+  "name": "node-key-http-provider",
   "private": true,
   "version": "0.1.1",
   "main": "./main.js",
