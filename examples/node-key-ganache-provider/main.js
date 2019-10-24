@@ -1,5 +1,5 @@
 const ganache = require('ganache-core');
-const { Query, Key, randomHex, randomAddress } = require('eth-sdk');
+const { Query, Key, randomHex, randomAddress, toWei } = require('eth-sdk');
 
 const MNEMONIC = 'silent add cereal habit burger upset burden protect promote fly thumb cloud';
 
@@ -32,7 +32,7 @@ async function main() {
   console.log();
 
   const to = randomAddress();
-  const value = 1000;
+  const value = toWei(1);
 
   const hash = await query.eth.sendTransaction({
     to,

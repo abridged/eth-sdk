@@ -1,4 +1,4 @@
-const { Query, Key, queryProviders, randomAddress } = require('eth-sdk');
+const { Query, Key, queryProviders, randomAddress, toWei } = require('eth-sdk');
 const fetch = require('node-fetch');
 
 // see: https://github.com/etherspot/etherspot-local
@@ -18,7 +18,7 @@ async function main() {
     .addExtension(key);
 
   const to = randomAddress();
-  const value = 999;
+  const value = toWei(1.5);
 
   const hash = await query.eth.sendTransaction({
     from: await key.address,
