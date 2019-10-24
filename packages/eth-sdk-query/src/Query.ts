@@ -33,7 +33,7 @@ export class Query implements IQuery {
 
     if (typeof innerProvider === 'string') {
       innerProvider = innerProvider as string;
-      switch (innerProvider.slice(2)) {
+      switch (innerProvider.slice(0, 2)) {
         case 'ht':
           innerProvider = new HttpProvider(innerProvider);
           break;
