@@ -16,10 +16,10 @@
 
 ## Examples
 
-* [(node.js + typescript) contract](./examples/node-contract/main.ts)
-* [(node.js) key](./examples/node-key/main.js)
-* [(node.js) query http provider](./examples/node-query-http-provider/main.js)
-* [(node.js) query websocket provider](./examples/node-query-websocket-provider/main.js)
+* [(node.js) key ganache provider](./examples/node-key-ganache-provider)
+* [(node.js) query http provider](./examples/node-query-http-provider)
+* [(node.js) query websocket provider](./examples/node-query-websocket-provider)
+* [(node.js + typescript) contract](./examples/ts-node-contract)
 
 ## License
 

@@ -1,5 +1,5 @@
 {
-  "name": "node-query-http-provider",
+  "name": "node-key-ganache-provider",
   "private": true,
   "version": "0.1.1",
   "main": "./main.js",
@@ -7,8 +7,9 @@
     "start": "node ./"
   },
   "dependencies": {
+    "@types/ganache-core": "^2.1.2",
     "@types/node": "^12.7.12",
     "eth-sdk": "^0.1.1",
-    "node-fetch": "^2.6.0"
+    "ganache-core": "^2.8.0"
   }
 }

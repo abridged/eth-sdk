@@ -1,10 +1,10 @@
 const { Query, queryProviders, sleep } = require('eth-sdk');
-const WebSocket = require('ws');
+const webSocketConstructor = require('ws');
 
 async function main() {
   const provider = new queryProviders
     .WebSocketProvider('wss://ropsten.infura.io/ws', {
-      webSocketConstructor: WebSocket,
+      webSocketConstructor,
     });
 
   provider.state$.subscribe((state) => {

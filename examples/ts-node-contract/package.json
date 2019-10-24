@@ -1,5 +1,5 @@
 {
-  "name": "node-contract",
+  "name": "ts-node-contract",
   "private": true,
   "version": "0.1.1",
   "scripts": {

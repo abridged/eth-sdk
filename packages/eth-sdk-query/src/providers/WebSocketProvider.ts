@@ -11,6 +11,7 @@ export class WebSocketProvider implements IProvider {
   public state$ = new BehaviorSubject<WebSocketProvider.States>(null);
   public error$ = new BehaviorSubject<any>(null);
 
+  private readonly webSocketConstructor: WebSocketProvider.IWebSocketConstructor;
   private readonly options: WebSocketProvider.IOptions;
   private connection: WebSocket;
 
@@ -23,17 +24,21 @@ export class WebSocketProvider implements IProvider {
     private endpoint: string,
     options: WebSocketProvider.IOptions = {},
   ) {
+    this.webSocketConstructor = typeof WebSocket !== 'undefined'
+      ? WebSocket
+      : this.options.webSocketConstructor;
+
+    if (!this.webSocketConstructor) {
+      throw new Error('please setup options.webSocketConstructor');
+    }
+
     this.options = {
-      webSocketConstructor: typeof WebSocket !== 'undefined' ? WebSocket : null,
       connect: false,
       reconnectTime: WebSocketProvider.DEFAULT_RECONNECT_TIME,
       requestTimeout: WebSocketProvider.DEFAULT_REQUEST_TIMEOUT,
       ...options,
+      webSocketConstructor: null,
     };
-
-    if (!this.options.webSocketConstructor) {
-      throw new Error('please setup options.webSocketConstructor');
-    }
 
     this
       .state$
@@ -171,9 +176,7 @@ export class WebSocketProvider implements IProvider {
 
     };
 
-    const { webSocketConstructor } = this.options;
-
-    this.connection = new webSocketConstructor(this.endpoint);
+    this.connection = new this.webSocketConstructor(this.endpoint);
     this.connection.addEventListener('open', openHandler);
     this.connection.addEventListener('error', errorHandler);
   }
@@ -242,8 +245,12 @@ export class WebSocketProvider implements IProvider {
 }
 
 export namespace WebSocketProvider {
+  export interface IWebSocketConstructor {
+    new(url: string, protocols?: string | string[]): WebSocket;
+  }
+
   export interface IOptions {
-    webSocketConstructor?: { new(url: string, protocols?: string | string[]): WebSocket };
+    webSocketConstructor?: any;
     connect?: boolean;
     reconnectTime?: number;
     requestTimeout?: number;

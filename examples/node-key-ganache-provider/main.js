@@ -31,10 +31,13 @@ async function main() {
 
   console.log();
 
+  const to = randomAddress();
+  const value = 1000;
+
   const hash = await query.eth.sendTransaction({
+    to,
+    value,
     from: await key.address,
-    to: randomAddress(),
-    value: 1000,
   });
 
   console.log('transaction:', JSON.stringify(await query.eth.getTransaction(hash), null, 2));
