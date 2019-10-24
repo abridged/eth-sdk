@@ -17,6 +17,7 @@
 ## Examples
 
 * [(node.js) key ganache provider](./examples/node-key-ganache-provider)
+* [(node.js) key http provider](./examples/node-key-http-provider)
 * [(node.js) query http provider](./examples/node-query-http-provider)
 * [(node.js) query websocket provider](./examples/node-query-websocket-provider)
 * [(node.js + typescript) contract](./examples/ts-node-contract)
