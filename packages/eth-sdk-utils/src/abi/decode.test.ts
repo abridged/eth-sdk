@@ -33,6 +33,8 @@ describe('abi.decode', () => {
     data: '000000000000000000000000407d73d8a49eeb85d32cf465507dd71d507100c1',
     expected: {
       a: '0x407D73d8a49eeb85D32Cf465507dd71d507100c1',
+      0: '0x407D73d8a49eeb85D32Cf465507dd71d507100c1',
+      length: 1,
     },
   });
 
@@ -51,6 +53,11 @@ describe('abi.decode', () => {
         '0x407D73d8a49eeb85D32Cf465507dd71d507100c1',
         '0x407D73d8a49eeb85D32Cf465507dd71d507100c1',
       ],
+      0: [
+        '0x407D73d8a49eeb85D32Cf465507dd71d507100c1',
+        '0x407D73d8a49eeb85D32Cf465507dd71d507100c1',
+      ],
+      length: 1,
     },
   });
 
@@ -78,6 +85,11 @@ describe('abi.decode', () => {
       b: [new BN('456', 16), new BN('789', 16)],
       c: '0x31323334353637383930',
       d: 'Hello, world!',
+      0: new BN('123', 16),
+      1: [new BN('456', 16), new BN('789', 16)],
+      2: '0x31323334353637383930',
+      3: 'Hello, world!',
+      length: 4,
     },
   });
 });

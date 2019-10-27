@@ -29,3 +29,9 @@ export interface IItemParam {
 export interface IItemInput extends IItemParam {
   indexed?: boolean;
 }
+
+export interface IDecoded {
+  [key: string]: any;
+  [key: number]: any;
+  length: number;
+}
