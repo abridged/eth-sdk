@@ -26,7 +26,7 @@ export class WebSocketProvider implements IProvider {
   ) {
     this.webSocketConstructor = typeof WebSocket !== 'undefined'
       ? WebSocket
-      : this.options.webSocketConstructor;
+      : options.webSocketConstructor;
 
     if (!this.webSocketConstructor) {
       throw new Error('please setup options.webSocketConstructor');
