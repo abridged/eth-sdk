@@ -33,5 +33,5 @@ export interface IItemInput extends IItemParam {
 export interface IDecoded {
   [key: string]: any;
   [key: number]: any;
-  length: number;
+  length?: number;
 }

@@ -1,7 +1,7 @@
 {
   "name": "node-key-ganache-provider",
   "private": true,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "./main.js",
   "scripts": {
     "start": "node ./"
@@ -9,7 +9,7 @@
   "dependencies": {
     "@types/ganache-core": "^2.1.2",
     "@types/node": "^12.7.12",
-    "eth-sdk": "^0.1.4",
+    "eth-sdk": "^0.1.5",
     "ganache-core": "^2.8.0"
   }
 }

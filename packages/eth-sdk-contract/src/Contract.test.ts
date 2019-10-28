@@ -1,8 +1,7 @@
-import { ContractFactory } from './ContractFactory';
-import { IContract } from './interfaces';
+import { Contract } from './Contract';
 
 interface IFunctions {
-  test1(a: number, b: number[], c: string, d: string): IContract.IMethodExecute;
+  test1(a: number, b: number[], c: string, d: string): Contract.IMethodExecute;
 }
 
 interface IEvents {
@@ -12,7 +11,7 @@ interface IEvents {
 }
 
 test('contractFactory', () => {
-  const contractFactory = new ContractFactory<IFunctions, IEvents>([
+  const contract = new Contract<IFunctions, IEvents>([
     {
       type: 'function',
       name: 'test1',
@@ -29,8 +28,6 @@ test('contractFactory', () => {
       payable: false,
     },
   ]);
-
-  const contract = contractFactory.getInstance();
 
   const data = contract.methods.test1(1, [1, 2], '0x01', '0x01').data;
   const signature = contract.methods.test1.signature;

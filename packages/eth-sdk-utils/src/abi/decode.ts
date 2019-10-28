@@ -54,13 +54,16 @@ function decodeNonArrayData(mainType: TType, data: string): any {
   return result;
 }
 
-export function decode<T = IDecoded>(params: IItemParam[], data: string): T {
+export function decode<T = IDecoded>(params: IItemParam[], data: string, indexed = true): T {
   let result: IDecoded = null;
 
   if (isHex(data, 'data')) {
-    result = {
-      length: 0,
-    };
+    result = indexed
+      ? {
+        length: params.length,
+      }
+      : {};
+
     data = data.slice(2);
 
     for (let i = 0; i < params.length; i += 1) {
@@ -113,10 +116,14 @@ export function decode<T = IDecoded>(params: IItemParam[], data: string): T {
       result = {
         ...result,
         [name]: value,
-        [i]: value,
       };
 
-      result.length += 1;
+      if (indexed) {
+        result = {
+          ...result,
+          [i]: value,
+        };
+      }
     }
   }
 
