@@ -22,7 +22,7 @@
     "build": "lerna run --stream build",
     "precompile-watch": "npm run build",
     "compile-watch": "lerna run --parallel compile-watch",
-    "publish": "npm run build && lerna version --no-push && lerna exec --stream npm publish",
+    "publish": "npm run build && lerna version --no-push && lerna exec --no-private --stream npm publish",
     "test": "lerna run --stream test"
   },
   "dependencies": {
