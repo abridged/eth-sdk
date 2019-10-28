@@ -11,18 +11,18 @@ test('local keys from mnemonic', async () => {
   const keys = Key.createLocalKeysFromMnemonic(MNEMONIC, null, { fromIndex: 0, toIndex: 1 });
 
   expect(keys.length).toBe(2);
-  expect(await keys[0].address).toBe(ADDRESSES[0]);
-  expect(await keys[1].address).toBe(ADDRESSES[1]);
+  expect(keys[0].address).toBe(ADDRESSES[0]);
+  expect(keys[1].address).toBe(ADDRESSES[1]);
 });
 
 test('local key from mnemonic', async () => {
   const key = Key.createLocalKeyFromMnemonic(MNEMONIC, null, { index: 1 });
 
-  expect(await key.address).toBe(ADDRESSES[1]);
+  expect(key.address).toBe(ADDRESSES[1]);
 });
 
 test('local key from private key', async () => {
   const key = new Key(PRIVATE_KEY);
 
-  expect(await key.address).toBe(ADDRESSES[0]);
+  expect(key.address).toBe(ADDRESSES[0]);
 });
