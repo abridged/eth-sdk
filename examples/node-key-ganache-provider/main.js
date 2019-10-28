@@ -26,7 +26,7 @@ async function main() {
     .addExtension(key);
 
   console.log('query.eth.accounts[0]:', (await query.eth.accounts)[0]);
-  console.log('query.eth.sign[0]:', await query.eth.sign(await key.address, message));
+  console.log('query.eth.sign[0]:', await query.eth.sign(key.address, message));
   console.log('query.eth.sign[1]:', await query.eth.sign(accounts[1], message));
 
   console.log();
@@ -37,7 +37,7 @@ async function main() {
   const hash = await query.eth.sendTransaction({
     to,
     value,
-    from: await key.address,
+    from: key.address,
   });
 
   console.log('transaction:', JSON.stringify(await query.eth.getTransaction(hash), null, 2));

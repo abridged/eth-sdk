@@ -90,7 +90,8 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
   }
 
   public readonly type: Key.Types = null;
-  public readonly address: Promise<string>;
+
+  private currentAddress: string;
 
   constructor(public privateKey: string = null, query: IQuery = null) {
     super(query);
@@ -100,14 +101,27 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
         throw new Error('invalid private key');
       }
 
-      this.address = Promise.resolve(publicKeyToAddress(
+      this.currentAddress = publicKeyToAddress(
         privateToPublicKey(privateKey),
-      ));
+      );
 
       this.type = Key.Types.Local;
     } else if (query) {
-      this.address = this.query.eth.accounts.then(([address]) => address);
+
       this.type = Key.Types.Network;
+    }
+  }
+
+  public get address(): string {
+    return this.currentAddress;
+  }
+
+  public async fetchAddress(index: number = 0): Promise<void> {
+    if (this.type === Key.Types.Network) {
+      const addresses = await this.query.eth.accounts;
+      const address = toChecksumAddress(addresses[index]);
+
+      this.currentAddress = address;
     }
   }
 
@@ -124,7 +138,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
 
       case Key.Types.Network:
         result = await this.query.eth.sign(
-          await this.address,
+          this.address,
           toHex(message),
         );
         break;
@@ -153,7 +167,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
       } = options;
 
       if (!nonce) {
-        nonce = await this.query.eth.getTransactionCount(await this.address, 'pending');
+        nonce = await this.query.eth.getTransactionCount(this.address, 'pending');
 
         if (this.nonce !== null && this.nonce >= nonce) {
           nonce = this.nonce + 1;
@@ -212,7 +226,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
     if (this.type === Key.Types.Local) {
       switch (method) {
         case queryModules.Eth.Methods.Accounts: {
-          result = [await this.address];
+          result = [this.address];
           break;
         }
 
@@ -224,7 +238,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
 
           address = toChecksumAddress(address);
 
-          if (address === await this.address) {
+          if (address === this.address) {
             result = await this.signPersonalMessage(data);
           }
           break;
@@ -244,7 +258,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
             gasPrice,
           } = options;
 
-          if (from === await this.address) {
+          if (from === this.address) {
 
             const raw = await this.signTransaction({
               to,
