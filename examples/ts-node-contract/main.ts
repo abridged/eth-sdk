@@ -1,15 +1,15 @@
 import BN from 'bn.js';
-import { Query, queryProviders, ContractFactory, IContract, toHex, TQuantity, randomAddress } from 'eth-sdk';
+import { Query, queryProviders, Contract, toHex, TQuantity, randomAddress } from 'eth-sdk';
 import fetch from 'node-fetch';
 
 const abiItems = require('./abi.json');
 
 interface IContractMethods {
-  balanceOf(address: string): IContract.IMethodExecute<{
+  balanceOf(address: string): Contract.IMethodExecute<{
     balance: BN
   }>;
 
-  transfer(to: string, value: TQuantity): IContract.IMethodExecute;
+  transfer(to: string, value: TQuantity): Contract.IMethodExecute;
 }
 
 interface IContractEvents {
@@ -27,11 +27,9 @@ async function main(): Promise<void> {
     });
 
   const query = new Query(provider);
-  const contractFactory = new ContractFactory<IContractMethods, IContractEvents>(abiItems, query);
-
   // see: https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7
-  const holder = '0x6158333905611b9baee7d243567948cf05360aae'; // some random token holder
-  const contract = contractFactory.getInstance('0xdac17f958d2ee523a2206206994597c13d831ec7');
+  const contract = new Contract<IContractMethods, IContractEvents>(abiItems, '0xdac17f958d2ee523a2206206994597c13d831ec7', query);
+  const holder = '0xbe0eb53f46cd790cd13851d5eff43d12404d33e8'; // some random token holder
 
   console.log('contract.address:', contract.address);
 
