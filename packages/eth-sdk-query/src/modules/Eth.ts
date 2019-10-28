@@ -14,6 +14,10 @@ import { IQuery } from '../interfaces';
 
 export class Eth {
   public static prepareBlockResult(raw: Eth.raw.IBlockResult): Eth.IBlockResult {
+    if (!raw) {
+      return null;
+    }
+
     const {
       hash,
       number,
@@ -30,6 +34,10 @@ export class Eth {
   }
 
   public static prepareBlockResultWithTransactions(raw: Eth.raw.IBlockResult): Eth.IBlockResultWithTransactions {
+    if (!raw) {
+      return null;
+    }
+
     const { transactions } = raw;
 
     return {
@@ -42,6 +50,10 @@ export class Eth {
   }
 
   public static prepareTransactionResult(raw: Eth.raw.ITransactionResult): Eth.ITransactionResult {
+    if (!raw) {
+      return null;
+    }
+
     const {
       blockHash,
       blockNumber,
@@ -70,6 +82,10 @@ export class Eth {
   }
 
   public static prepareLogResult(raw: Eth.raw.ILogResult): Eth.ILogResult {
+    if (!raw) {
+      return null;
+    }
+
     const {
       logIndex: index,
       transactionHash,
@@ -327,6 +343,10 @@ export class Eth {
         hash,
       )
       .then((raw) => {
+        if (!raw) {
+          return null;
+        }
+
         const {
           cumulativeGasUsed,
           gasUsed,
@@ -350,7 +370,10 @@ export class Eth {
       .send<Eth.raw.ITransactionResult[]>(
         Eth.Methods.PendingTransactions,
       )
-      .then(raws => raws.map(raw => Eth.prepareTransactionResult(raw)));
+      .then(raws => Array.isArray(raws)
+        ? raws.map(raw => Eth.prepareTransactionResult(raw))
+        : [],
+      );
   }
 
   public getLogs(options: Eth.ILogOptions): Promise<Eth.ILogResult[]> {
@@ -371,7 +394,10 @@ export class Eth {
           toBlock: isTag(toBlock) ? toBlock : toHex(toBlock, null),
         }),
       )
-      .then(raws => raws.map(raw => Eth.prepareLogResult(raw)));
+      .then(raws => Array.isArray(raws)
+        ? raws.map(raw => Eth.prepareLogResult(raw))
+        : [],
+      );
   }
 }
 
