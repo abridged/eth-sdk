@@ -21,7 +21,7 @@ async function main() {
   const value = toWei(1.5);
 
   const hash = await query.eth.sendTransaction({
-    from: await key.address,
+    from: key.address,
     to,
     value,
   });
