@@ -9,10 +9,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/etherspot/eth-sdk.git"
+    "url": "https://github.com/abridged/eth-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/etherspot/eth-sdk/issues"
+    "url": "https://github.com/abridged/eth-sdk/issues"
   },
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -25,17 +25,17 @@
     "compile-watch": "npm run compile -- --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "@eth-sdk/contract": "^0.1.6",
-    "@eth-sdk/key": "^0.1.6",
-    "@eth-sdk/query": "^0.1.6",
-    "@eth-sdk/utils": "^0.1.6",
-    "@types/node": "^12.0.0"
+    "@eth-sdk/contract": "0.1.6",
+    "@eth-sdk/key": "0.1.6",
+    "@eth-sdk/query": "0.1.6",
+    "@eth-sdk/utils": "0.1.6",
+    "@types/node": "12.12.9"
   },
   "devDependencies": {
-    "rimraf": "^3.0.0",
-    "tslint": "^5.20.0",
-    "tslint-config-airbnb": "^5.11.2",
-    "tsutils": "^3.17.1",
-    "typescript": "^3.6.4"
+    "rimraf": "3.0.0",
+    "tslint": "5.20.1",
+    "tslint-config-airbnb": "5.11.2",
+    "tsutils": "3.17.1",
+    "typescript": "3.7.2"
   }
 }

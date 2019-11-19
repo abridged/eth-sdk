@@ -115,6 +115,14 @@ export class Eth {
     //
   }
 
+  public get chainId(): Promise<number> {
+    return this.query
+      .send(
+        Eth.Methods.ChainId,
+      )
+      .then(raw => toNumber(raw));
+  }
+
   public get gasPrice(): Promise<BN> {
     return this.query
       .send(
@@ -403,6 +411,7 @@ export class Eth {
 
 export namespace Eth {
   export enum Methods {
+    ChainId = 'eth_chainId',
     GasPrice = 'eth_gasPrice',
     Accounts = 'eth_accounts',
     BlockNumber = 'eth_blockNumber',
