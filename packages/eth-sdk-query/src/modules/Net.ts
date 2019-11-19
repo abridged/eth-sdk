@@ -8,10 +8,6 @@ export class Net {
     //
   }
 
-  public get id(): Promise<string> {
-    return this.version.then(version => `${version}`);
-  }
-
   public get version(): Promise<number> {
     return this.query
       .send(

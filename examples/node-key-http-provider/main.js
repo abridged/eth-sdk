@@ -1,9 +1,10 @@
 const { Query, Key, queryProviders, randomAddress, toWei } = require('eth-sdk');
 const fetch = require('node-fetch');
 
-// see: https://github.com/etherspot/etherspot-local
-const HTTP_PROVIDER_ENDPOINT = 'http://localhost:8545';
-const PRIVATE_KEY = '0x9e73ef82d7e4ebeb1d3ae220df7ccd0db239c65092fc0f42084db75af7f10e3a';
+const {
+  HTTP_PROVIDER_ENDPOINT,
+  PRIVATE_KEY,
+} = process.env;
 
 async function main() {
   const provider = new queryProviders.HttpProvider(HTTP_PROVIDER_ENDPOINT, {
@@ -31,4 +32,3 @@ async function main() {
 
 main()
   .catch(console.log);
-

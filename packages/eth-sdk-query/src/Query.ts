@@ -14,6 +14,8 @@ import {
 } from './interfaces';
 
 export class Query implements IQuery {
+  public static defaultInstance: Query = null;
+
   public static JSON_RPC_VERSION = '2.0';
 
   private static REQUEST_COUNTER = Date.now();
@@ -49,6 +51,10 @@ export class Query implements IQuery {
     }
 
     this.currentProvider.innerProvider = innerProvider as IProvider;
+
+    if (!Query.defaultInstance) {
+      Query.defaultInstance = this;
+    }
   }
 
   public async send<T = any>(method: string, ...params: any[]): Promise<T> {
