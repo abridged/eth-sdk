@@ -7,9 +7,9 @@
     "start": "node ./"
   },
   "dependencies": {
-    "@types/ganache-core": "^2.1.2",
-    "@types/node": "^12.7.12",
-    "eth-sdk": "^0.1.6",
-    "ganache-core": "^2.8.0"
+    "@types/ganache-core": "2.1.2",
+    "@types/node": "12.12.9",
+    "eth-sdk": "0.1.6",
+    "ganache-core": "2.9.1-beta.0"
   }
 }
