@@ -120,7 +120,7 @@ export class Contract<F = null, E = null, K = E extends null ? string : keyof E>
       throw new Error('invalid contract address');
     }
 
-    return this.address;
+    return result;
   }
 
   protected buildEvents(): any {
