@@ -2,19 +2,34 @@ import { BehaviorSubject } from 'rxjs';
 import { IProvider } from './interfaces';
 
 export class HttpProvider implements IProvider {
+  private static detectFetch(option: any = null): any {
+    let result: any;
+
+    if (option) {
+      result = option;
+    } else {
+      result = (
+        typeof window !== 'undefined' &&
+        typeof window.fetch !== 'undefined'
+      )
+        ? window.fetch.bind(window)
+        : null;
+    }
+
+    if (!result) {
+      new Error('fetch not found. Please use `node-fetch` via options.fetch');
+    }
+
+    return result;
+  }
+
   private readonly fetch: HttpProvider.TFetch;
 
   constructor(
     private endpoint: string,
     options: HttpProvider.IOptions = {},
   ) {
-    this.fetch = typeof fetch !== 'undefined'
-      ? fetch
-      : options.fetch;
-
-    if (!this.fetch) {
-      new Error('fetch not found. Please use `node-fetch` via options.fetch');
-    }
+    this.fetch = HttpProvider.detectFetch(options.fetch);
   }
 
   public get connected$(): BehaviorSubject<boolean> {

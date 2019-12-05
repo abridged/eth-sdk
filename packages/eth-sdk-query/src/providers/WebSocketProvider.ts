@@ -6,6 +6,26 @@ export class WebSocketProvider implements IProvider {
   public static DEFAULT_RECONNECT_TIME = 5000;
   public static DEFAULT_REQUEST_TIMEOUT = 3000;
 
+  private static detectWebSocketConstructor(option: any = null): any {
+    let result: any;
+
+    if (option) {
+      result = option;
+    } else {
+      result = (
+        typeof WebSocket !== 'undefined'
+      )
+        ? WebSocket
+        : null;
+    }
+
+    if (!result) {
+      throw new Error('please setup options.webSocketConstructor');
+    }
+
+    return result;
+  }
+
   public connected$ = new BehaviorSubject<boolean>(null);
   public notification$ = new BehaviorSubject<IProvider.INotification>(null);
   public state$ = new BehaviorSubject<WebSocketProvider.States>(null);
@@ -24,13 +44,7 @@ export class WebSocketProvider implements IProvider {
     private endpoint: string,
     options: WebSocketProvider.IOptions = {},
   ) {
-    this.webSocketConstructor = typeof WebSocket !== 'undefined'
-      ? WebSocket
-      : options.webSocketConstructor;
-
-    if (!this.webSocketConstructor) {
-      throw new Error('please setup options.webSocketConstructor');
-    }
+    this.webSocketConstructor = WebSocketProvider.detectWebSocketConstructor(options.webSocketConstructor);
 
     this.options = {
       connect: false,
