@@ -186,7 +186,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
         gas = 21000;
       }
 
-      const chainId = await this.query.net.version;
+      const chainId = await this.query.eth.chainId;
 
       let common: Common = null;
       try {
