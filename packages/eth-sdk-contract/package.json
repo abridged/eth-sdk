@@ -1,6 +1,6 @@
 {
   "name": "@eth-sdk/contract",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Eth sdk contract",
   "author": {
     "name": "Stanislaw Glogowski",
@@ -27,8 +27,8 @@
     "test-watch": "jest --watchAll --passWithNoTests"
   },
   "dependencies": {
-    "@eth-sdk/query": "^0.2.7",
-    "@eth-sdk/utils": "^0.2.7",
+    "@eth-sdk/query": "^0.2.8",
+    "@eth-sdk/utils": "^0.2.8",
     "@types/node": "12.12.9",
     "rxjs": "6.5.3"
   },
