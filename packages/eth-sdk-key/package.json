@@ -1,6 +1,6 @@
 {
   "name": "@eth-sdk/key",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Eth sdk key",
   "author": {
     "name": "Stanislaw Glogowski",

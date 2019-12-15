@@ -1,6 +1,6 @@
 {
   "name": "eth-sdk",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Eth sdk",
   "author": {
     "name": "Stanislaw Glogowski",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@eth-sdk/contract": "^0.2.3",
-    "@eth-sdk/key": "^0.2.3",
+    "@eth-sdk/key": "^0.2.4",
     "@eth-sdk/query": "^0.2.3",
     "@eth-sdk/utils": "^0.2.3",
     "@types/node": "12.12.9"
