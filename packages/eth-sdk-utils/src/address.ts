@@ -56,8 +56,10 @@ export function computeCreate2Address(creator: string, salt: string, byteCode: s
       byteCode,
     );
 
+    const address = `${HEX_PREFIX}${keccak256(payload).slice(2).slice(-40)}`;
+
     result = toChecksumAddress(
-      `${HEX_PREFIX}${keccak256(payload).slice(2).slice(-40)}`,
+      address,
     );
   }
 
