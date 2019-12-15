@@ -1,14 +1,14 @@
 {
   "name": "react-app",
   "private": true,
-  "version": "0.2.6",
+  "version": "0.2.7",
   "scripts": {
     "start": "react-scripts start"
   },
   "dependencies": {
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.4",
-    "eth-sdk": "^0.2.6",
+    "eth-sdk": "^0.2.7",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-scripts": "3.2.0"

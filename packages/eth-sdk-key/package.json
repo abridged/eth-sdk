@@ -1,6 +1,6 @@
 {
   "name": "@eth-sdk/key",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Eth sdk key",
   "author": {
     "name": "Stanislaw Glogowski",
@@ -27,8 +27,8 @@
     "test-watch": "jest --watchAll --passWithNoTests"
   },
   "dependencies": {
-    "@eth-sdk/query": "^0.2.6",
-    "@eth-sdk/utils": "^0.2.6",
+    "@eth-sdk/query": "^0.2.7",
+    "@eth-sdk/utils": "^0.2.7",
     "@types/hdkey": "0.7.1",
     "@types/node": "12.12.9",
     "bip39": "3.0.2",

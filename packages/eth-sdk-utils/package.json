@@ -1,6 +1,6 @@
 {
   "name": "@eth-sdk/utils",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Eth sdk utils",
   "author": {
     "name": "Stanislaw Glogowski",
