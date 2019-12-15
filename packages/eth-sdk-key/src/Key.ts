@@ -144,7 +144,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
         break;
 
       default:
-        throw new Error('invalid key');
+        throw new Error('invalid private key');
     }
 
     return result;
