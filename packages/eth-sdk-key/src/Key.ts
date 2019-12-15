@@ -186,29 +186,30 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
         gas = 21000;
       }
 
-      const args: any[] = [{
+      const chainId = await this.query.eth.chainId;
+      const networkId = await this.query.net.version;
+
+      let common: Common = null;
+      try {
+        common = new Common(chainId, 'istanbul');
+      } catch (err) {
+        common = Common.forCustomChain(1, {
+          chainId,
+          networkId,
+          comment: 'Custom chain',
+        }, 'istanbul');
+      }
+
+      const transaction = new Transaction({
         to,
         nonce: toHex(nonce, '0x00', true),
         gasLimit: toHex(gas, '0x00', true),
         gasPrice: toHex(gasPrice, '0x00', true),
         value: toHex(value, '0x00', true),
         data: toHex(data, '0x'),
-      }];
-
-      const chainId = await this.query.eth.chainId;
-
-      if (chainId > 1000) {
-        const networkId = await this.query.net.version;
-        args.push({
-          common: Common.forCustomChain(1, {
-            chainId,
-            networkId,
-            comment: 'Custom chain',
-          }),
-        });
-      }
-
-      const transaction = new Transaction(...args);
+      }, {
+        common,
+      });
 
       transaction.sign(toBuffer(this.privateKey));
 
