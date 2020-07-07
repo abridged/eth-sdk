@@ -1,14 +1,14 @@
 {
   "name": "node-query-http-provider",
   "private": true,
-  "version": "0.2.8",
+  "version": "0.2.9",
   "main": "./main.js",
   "scripts": {
     "start": "node ./"
   },
   "dependencies": {
     "@types/node": "12.12.9",
-    "eth-sdk": "^0.2.8",
+    "eth-sdk": "^0.2.9",
     "node-fetch": "2.6.0"
   }
 }
