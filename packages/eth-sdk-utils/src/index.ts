@@ -10,6 +10,7 @@ export * from './number';
 export * from './personalMessage';
 export * from './secp256k1';
 export * from './tag';
+export * from './typedMessage';
 export * from './units';
 export * from './web3';
 

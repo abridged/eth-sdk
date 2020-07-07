@@ -154,7 +154,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
   public signTypedMessage(message: string): string {
     return signTypedMessage(
       message,
-      this.privateKey
+      this.privateKey,
     );
   }
 
