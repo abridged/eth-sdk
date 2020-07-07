@@ -15,6 +15,7 @@ import {
   publicKeyToAddress,
   privateToPublicKey,
   signPersonalMessage,
+  signTypedMessage,
   TData,
   TQuantity,
   toChecksumAddress, toBuffer, toNumber,
@@ -148,6 +149,13 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
     }
 
     return result;
+  }
+
+  public signTypedMessage(message: string): string {
+    return signTypedMessage(
+      message,
+      this.privateKey
+    );
   }
 
   public async signTransaction(options: Key.ISignTransactionOptions): Promise<string> {
