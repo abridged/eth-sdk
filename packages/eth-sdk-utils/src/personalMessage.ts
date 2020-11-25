@@ -1,4 +1,4 @@
-import { sign, recover } from 'secp256k1';
+import { ecdsaSign, ecdsaRecover } from 'secp256k1';
 import { toBuffer } from './buffer';
 import { concatHex, toHex, getHexBytesSize, padHexLeft } from './hex';
 import { keccak256 } from './keccak';
@@ -18,11 +18,11 @@ export function hashPersonalMessage(message: TData): string {
 export function signPersonalMessage(message: TData, privateKey: string): string {
   const messageHash = hashPersonalMessage(message);
 
-  const { recovery, signature } = sign(toBuffer(messageHash), toBuffer(privateKey));
+  const { recid, signature } = ecdsaSign(toBuffer(messageHash), toBuffer(privateKey));
 
   return concatHex(
     signature,
-    padHexLeft(recovery, 1),
+    padHexLeft(recid, 1),
   );
 }
 
@@ -43,10 +43,10 @@ export function recoverPublicKeyFromPersonalMessage(message: TData, signature: s
   let result: string = null;
 
   try {
-    const publicKey = toHex(recover(
-      toBuffer(hash),
+    const publicKey = toHex(ecdsaRecover(
       s,
       r,
+      toBuffer(hash),
       false,
     ));
 
