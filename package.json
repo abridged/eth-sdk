@@ -1,7 +1,7 @@
 {
-  "name": "eth-sdk",
+  "name": "eth-sdk-monorepo",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Eth sdk",
   "author": {
     "name": "Stanislaw Glogowski",
@@ -26,6 +26,6 @@
     "publish": "npm run build && lerna version --no-push && lerna exec --stream --no-private --no-bail npm publish"
   },
   "dependencies": {
-    "lerna": "3.18.4"
+    "lerna": "^3.22.1"
   }
 }

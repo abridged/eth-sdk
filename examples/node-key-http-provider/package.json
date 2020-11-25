@@ -9,6 +9,6 @@
   "dependencies": {
     "@types/node": "12.12.9",
     "eth-sdk": "^0.2.10",
-    "node-fetch": "2.6.0"
+    "node-fetch": "^2.6.1"
   }
 }
