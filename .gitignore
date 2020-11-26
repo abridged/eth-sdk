@@ -2,6 +2,8 @@
 !.gitignore
 !.npmignore
 
+!.prettier*
+
 *.log
 npm-debug.log*
 lerna-debug.log*
