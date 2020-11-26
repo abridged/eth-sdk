@@ -5,7 +5,4 @@ export * from './interfaces';
 export * from './Query';
 export * from './WithQuery';
 
-export {
-  queryProviders,
-  queryModules,
-};
+export {queryProviders, queryModules};

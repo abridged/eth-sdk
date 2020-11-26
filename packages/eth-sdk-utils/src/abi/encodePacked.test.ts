@@ -1,20 +1,21 @@
 import BN from 'bn.js';
-import { encodePacked } from './encodePacked';
+import {encodePacked} from './encodePacked';
 
 describe('abi.encodePacked', () => {
   test('BN', () => {
-    expect(encodePacked(new BN(2)))
-      .toBe('0x0000000000000000000000000000000000000000000000000000000000000002');
+    expect(encodePacked(new BN(2))).toBe(
+      '0x0000000000000000000000000000000000000000000000000000000000000002',
+    );
   });
 
   test('number', () => {
-    expect(encodePacked(1))
-      .toBe('0x0000000000000000000000000000000000000000000000000000000000000001');
+    expect(encodePacked(1)).toBe(
+      '0x0000000000000000000000000000000000000000000000000000000000000001',
+    );
   });
 
   test('string', () => {
-    expect(encodePacked('test'))
-      .toBe('0x74657374');
+    expect(encodePacked('test')).toBe('0x74657374');
   });
 
   test('string[]', () => {
@@ -22,12 +23,12 @@ describe('abi.encodePacked', () => {
   });
 
   test('uint8', () => {
-    expect(encodePacked({ type: 'uint8', value: 1 }))
-      .toBe('0x01');
+    expect(encodePacked({type: 'uint8', value: 1})).toBe('0x01');
   });
 
   test('number, uint16', () => {
-    expect(encodePacked(1, { type: 'uint8', value: 2 }))
-      .toBe('0x000000000000000000000000000000000000000000000000000000000000000102');
+    expect(encodePacked(1, {type: 'uint8', value: 2})).toBe(
+      '0x000000000000000000000000000000000000000000000000000000000000000102',
+    );
   });
 });

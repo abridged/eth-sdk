@@ -1,10 +1,16 @@
-import { IEncodedArg, IEncodedArgShort, IItem } from './interfaces';
+import {IEncodedArg, IEncodedArgShort, IItem} from './interfaces';
 
-export type TType = (
-  'address' | 'bool' | 'bytes' |
-  'string' | 'bytes1' | 'bytes32' |
-  'uint' | 'uint8' | 'uint256' | string
-  );
+export type TType =
+  | 'address'
+  | 'bool'
+  | 'bytes'
+  | 'string'
+  | 'bytes1'
+  | 'bytes32'
+  | 'uint'
+  | 'uint8'
+  | 'uint256'
+  | string;
 
 export type TEncodedPackedArg = IEncodedArg | IEncodedArgShort | any;
 

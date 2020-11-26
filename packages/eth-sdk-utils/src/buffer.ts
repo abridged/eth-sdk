@@ -1,7 +1,10 @@
-import { BUFFER_TEXT_ENCODING } from './constants';
-import { isHex } from './hex';
+import {BUFFER_TEXT_ENCODING} from './constants';
+import {isHex} from './hex';
 
-export function toBuffer(value: string | Buffer, defaultValue: Buffer = Buffer.alloc(0)): Buffer {
+export function toBuffer(
+  value: string | Buffer,
+  defaultValue: Buffer = Buffer.alloc(0),
+): Buffer {
   let result: Buffer = null;
 
   if (value) {

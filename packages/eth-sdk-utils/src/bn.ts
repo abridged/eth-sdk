@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { isHex } from './hex';
+import {isHex} from './hex';
 
 export function toBN(value: any, defaultValue: BN = null): BN {
   let result: BN = null;

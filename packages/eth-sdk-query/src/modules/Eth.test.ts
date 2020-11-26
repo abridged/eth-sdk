@@ -1,5 +1,5 @@
-import { eth } from '../__mocks__';
-import { Eth } from './Eth';
+import {eth} from '../__mocks__';
+import {Eth} from './Eth';
 
 describe('Eth', () => {
   test('gasPrice', async () => {

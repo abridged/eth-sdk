@@ -10,20 +10,17 @@ import {
   TData,
   TTagOrQuantity,
 } from '@eth-sdk/utils';
-import { IQuery } from '../interfaces';
+import {IQuery} from '../interfaces';
 
 export class Eth {
-  public static prepareBlockResult(raw: Eth.raw.IBlockResult): Eth.IBlockResult {
+  public static prepareBlockResult(
+    raw: Eth.raw.IBlockResult,
+  ): Eth.IBlockResult {
     if (!raw) {
       return null;
     }
 
-    const {
-      hash,
-      number,
-      gasLimit,
-      gasUsed,
-    } = raw;
+    const {hash, number, gasLimit, gasUsed} = raw;
 
     return {
       hash,
@@ -33,23 +30,28 @@ export class Eth {
     };
   }
 
-  public static prepareBlockResultWithTransactions(raw: Eth.raw.IBlockResult): Eth.IBlockResultWithTransactions {
+  public static prepareBlockResultWithTransactions(
+    raw: Eth.raw.IBlockResult,
+  ): Eth.IBlockResultWithTransactions {
     if (!raw) {
       return null;
     }
 
-    const { transactions } = raw;
+    const {transactions} = raw;
 
     return {
       ...this.prepareBlockResult(raw),
-      transactions: transactions.map(transaction => typeof transaction === 'object'
-        ? this.prepareTransactionResult(transaction)
-        : transaction,
+      transactions: transactions.map(transaction =>
+        typeof transaction === 'object'
+          ? this.prepareTransactionResult(transaction)
+          : transaction,
       ),
     };
   }
 
-  public static prepareTransactionResult(raw: Eth.raw.ITransactionResult): Eth.ITransactionResult {
+  public static prepareTransactionResult(
+    raw: Eth.raw.ITransactionResult,
+  ): Eth.ITransactionResult {
     if (!raw) {
       return null;
     }
@@ -109,45 +111,32 @@ export class Eth {
     };
   }
 
-  constructor(
-    private query: IQuery,
-  ) {
+  constructor(private query: IQuery) {
     //
   }
 
   public get chainId(): Promise<number> {
-    return this.query
-      .send(
-        Eth.Methods.ChainId,
-      )
-      .then(raw => toNumber(raw));
+    return this.query.send(Eth.Methods.ChainId).then(raw => toNumber(raw));
   }
 
   public get gasPrice(): Promise<BN> {
-    return this.query
-      .send(
-        Eth.Methods.GasPrice,
-      )
-      .then(raw => toBN(raw, null));
+    return this.query.send(Eth.Methods.GasPrice).then(raw => toBN(raw, null));
   }
 
   public get accounts(): Promise<string[]> {
     return this.query
-      .send<string[]>(
-        Eth.Methods.Accounts,
-      )
+      .send<string[]>(Eth.Methods.Accounts)
       .then(accounts => accounts.map(account => toChecksumAddress(account)));
   }
 
   public get blockNumber(): Promise<number> {
-    return this.query
-      .send(
-        Eth.Methods.BlockNumber,
-      )
-      .then(raw => toNumber(raw));
+    return this.query.send(Eth.Methods.BlockNumber).then(raw => toNumber(raw));
   }
 
-  public getBalance(address: string, tag: TTagOrQuantity = 'latest'): Promise<BN> {
+  public getBalance(
+    address: string,
+    tag: TTagOrQuantity = 'latest',
+  ): Promise<BN> {
     return this.query
       .send(
         Eth.Methods.GetBalance,
@@ -157,17 +146,23 @@ export class Eth {
       .then(raw => toBN(raw));
   }
 
-  public getStorageAt(address: string, position: TQuantity, tag: TTagOrQuantity = 'latest'): Promise<string> {
-    return this.query
-      .send(
-        Eth.Methods.GetStorageAt,
-        toChecksumAddress(address),
-        toHex(position),
-        isTag(tag) ? tag : toHex(tag),
-      );
+  public getStorageAt(
+    address: string,
+    position: TQuantity,
+    tag: TTagOrQuantity = 'latest',
+  ): Promise<string> {
+    return this.query.send(
+      Eth.Methods.GetStorageAt,
+      toChecksumAddress(address),
+      toHex(position),
+      isTag(tag) ? tag : toHex(tag),
+    );
   }
 
-  public getTransactionCount(address: string, tag: TTagOrQuantity = 'latest'): Promise<number> {
+  public getTransactionCount(
+    address: string,
+    tag: TTagOrQuantity = 'latest',
+  ): Promise<number> {
     return this.query
       .send(
         Eth.Methods.GetTransactionCount,
@@ -179,14 +174,13 @@ export class Eth {
 
   public getBlockTransactionCountByHash(hash: string): Promise<number> {
     return this.query
-      .send(
-        Eth.Methods.GetBlockTransactionCountByHash,
-        hash,
-      )
+      .send(Eth.Methods.GetBlockTransactionCountByHash, hash)
       .then(raw => toNumber(raw));
   }
 
-  public getBlockTransactionCountByNumber(tag: TTagOrQuantity = 'latest'): Promise<number> {
+  public getBlockTransactionCountByNumber(
+    tag: TTagOrQuantity = 'latest',
+  ): Promise<number> {
     return this.query
       .send(
         Eth.Methods.GetBlockTransactionCountByNumber,
@@ -195,92 +189,70 @@ export class Eth {
       .then(raw => toNumber(raw));
   }
 
-  public getCode(address: string, tag: TTagOrQuantity = 'latest'): Promise<string> {
-    return this.query
-      .send(
-        Eth.Methods.GetCode,
-        toChecksumAddress(address),
-        isTag(tag) ? tag : toHex(tag),
-      );
+  public getCode(
+    address: string,
+    tag: TTagOrQuantity = 'latest',
+  ): Promise<string> {
+    return this.query.send(
+      Eth.Methods.GetCode,
+      toChecksumAddress(address),
+      isTag(tag) ? tag : toHex(tag),
+    );
   }
 
   public sign(address: string, data: TData): Promise<string> {
-    return this.query
-      .send(
-        Eth.Methods.Sign,
-        toChecksumAddress(address),
-        toHex(data),
-      );
+    return this.query.send(
+      Eth.Methods.Sign,
+      toChecksumAddress(address),
+      toHex(data),
+    );
   }
 
-  public sendTransaction(options: Eth.ISendTransactionOptions): Promise<string> {
-    const {
-      from,
-      to,
-      gas,
-      gasPrice,
-      value,
-      data,
-      nonce,
-    } = options;
+  public sendTransaction(
+    options: Eth.ISendTransactionOptions,
+  ): Promise<string> {
+    const {from, to, gas, gasPrice, value, data, nonce} = options;
 
-    return this.query
-      .send(
-        Eth.Methods.SendTransaction,
-        cleanEmpty({
-          from: toChecksumAddress(from),
-          to: toChecksumAddress(to),
-          gas: toHex(gas, null),
-          gasPrice: toHex(gasPrice, null),
-          value: toHex(value, null),
-          data: toHex(data, '0x'),
-          nonce: toHex(nonce, null),
-        }),
-      );
+    return this.query.send(
+      Eth.Methods.SendTransaction,
+      cleanEmpty({
+        from: toChecksumAddress(from),
+        to: toChecksumAddress(to),
+        gas: toHex(gas, null),
+        gasPrice: toHex(gasPrice, null),
+        value: toHex(value, null),
+        data: toHex(data, '0x'),
+        nonce: toHex(nonce, null),
+      }),
+    );
   }
 
   public sendRawTransaction(data: TData): Promise<string> {
-    return this.query
-      .send(
-        Eth.Methods.SendRawTransaction,
-        toHex(data),
-      );
+    return this.query.send(Eth.Methods.SendRawTransaction, toHex(data));
   }
 
-  public call(options: Eth.ICallOptions, tag: TTagOrQuantity = 'latest'): Promise<string> {
-    const {
-      from,
-      to,
-      gas,
-      gasPrice,
-      value,
-      data,
-    } = options;
+  public call(
+    options: Eth.ICallOptions,
+    tag: TTagOrQuantity = 'latest',
+  ): Promise<string> {
+    const {from, to, gas, gasPrice, value, data} = options;
 
-    return this.query
-      .send(
-        Eth.Methods.Call,
-        cleanEmpty({
-          from: toChecksumAddress(from),
-          to: toChecksumAddress(to),
-          gas: toHex(gas, null),
-          gasPrice: toHex(gasPrice, null),
-          value: toHex(value, null),
-          data: toHex(data, null),
-        }),
-        isTag(tag) ? tag : toHex(tag),
-      );
+    return this.query.send(
+      Eth.Methods.Call,
+      cleanEmpty({
+        from: toChecksumAddress(from),
+        to: toChecksumAddress(to),
+        gas: toHex(gas, null),
+        gasPrice: toHex(gasPrice, null),
+        value: toHex(value, null),
+        data: toHex(data, null),
+      }),
+      isTag(tag) ? tag : toHex(tag),
+    );
   }
 
   public estimateGas(options: Partial<Eth.ICallOptions>): Promise<number> {
-    const {
-      from,
-      to,
-      gas,
-      gasPrice,
-      value,
-      data,
-    } = options;
+    const {from, to, gas, gasPrice, value, data} = options;
 
     return this.query
       .send(
@@ -297,15 +269,22 @@ export class Eth {
       .then(result => toNumber(result));
   }
 
-  public getBlockByHash(hash: string): Promise<Eth.IBlockResultWithTransactions<string>>;
+  public getBlockByHash(
+    hash: string,
+  ): Promise<Eth.IBlockResultWithTransactions<string>>;
 
-  public getBlockByHash(hash: string, returnTransactionObjects: true): Promise<Eth.IBlockResultWithTransactions<Eth.ITransactionResult>>;
+  public getBlockByHash(
+    hash: string,
+    returnTransactionObjects: true,
+  ): Promise<Eth.IBlockResultWithTransactions<Eth.ITransactionResult>>;
 
-  public getBlockByHash(...args: any[]): Promise<Eth.IBlockResultWithTransactions<any>> {
+  public getBlockByHash(
+    ...args: any[]
+  ): Promise<Eth.IBlockResultWithTransactions<any>> {
     let hash: string;
     let returnTransactionObjects: boolean;
 
-    ([hash, returnTransactionObjects] = args);
+    [hash, returnTransactionObjects] = args;
 
     return this.query
       .send<Eth.raw.IBlockResult>(
@@ -316,15 +295,22 @@ export class Eth {
       .then(raw => Eth.prepareBlockResultWithTransactions(raw));
   }
 
-  public getBlockByNumber(number: number): Promise<Eth.IBlockResultWithTransactions<string>>;
+  public getBlockByNumber(
+    number: number,
+  ): Promise<Eth.IBlockResultWithTransactions<string>>;
 
-  public getBlockByNumber(number: number, returnTransactionObjects: true): Promise<Eth.IBlockResultWithTransactions<Eth.ITransactionResult>>;
+  public getBlockByNumber(
+    number: number,
+    returnTransactionObjects: true,
+  ): Promise<Eth.IBlockResultWithTransactions<Eth.ITransactionResult>>;
 
-  public getBlockByNumber(...args: any[]): Promise<Eth.IBlockResultWithTransactions<any>> {
+  public getBlockByNumber(
+    ...args: any[]
+  ): Promise<Eth.IBlockResultWithTransactions<any>> {
     let number: string;
     let returnTransactionObjects: boolean;
 
-    ([number, returnTransactionObjects] = args);
+    [number, returnTransactionObjects] = args;
 
     return this.query
       .send<Eth.raw.IBlockResult>(
@@ -337,31 +323,24 @@ export class Eth {
 
   public getTransaction(hash: string): Promise<Eth.ITransactionResult> {
     return this.query
-      .send(
-        Eth.Methods.GetTransactionByHash,
-        hash,
-      )
+      .send(Eth.Methods.GetTransactionByHash, hash)
       .then(raw => Eth.prepareTransactionResult(raw));
   }
 
-  public getTransactionReceipt(hash: string): Promise<Eth.ITransactionReceiptResult> {
+  public getTransactionReceipt(
+    hash: string,
+  ): Promise<Eth.ITransactionReceiptResult> {
     return this.query
       .send<Eth.raw.ITransactionReceiptResult>(
         Eth.Methods.GetTransactionReceipt,
         hash,
       )
-      .then((raw) => {
+      .then(raw => {
         if (!raw) {
           return null;
         }
 
-        const {
-          cumulativeGasUsed,
-          gasUsed,
-          contractAddress,
-          logs,
-          status,
-        } = raw;
+        const {cumulativeGasUsed, gasUsed, contractAddress, logs, status} = raw;
 
         return {
           contractAddress: toChecksumAddress(contractAddress),
@@ -375,22 +354,16 @@ export class Eth {
 
   public get pendingTransactions(): Promise<Eth.ITransactionResult[]> {
     return this.query
-      .send<Eth.raw.ITransactionResult[]>(
-        Eth.Methods.PendingTransactions,
-      )
-      .then(raws => Array.isArray(raws)
-        ? raws.map(raw => Eth.prepareTransactionResult(raw))
-        : [],
+      .send<Eth.raw.ITransactionResult[]>(Eth.Methods.PendingTransactions)
+      .then(raws =>
+        Array.isArray(raws)
+          ? raws.map(raw => Eth.prepareTransactionResult(raw))
+          : [],
       );
   }
 
   public getLogs(options: Eth.ILogOptions): Promise<Eth.ILogResult[]> {
-    const {
-      fromBlock,
-      toBlock,
-      topics,
-      address,
-    } = options;
+    const {fromBlock, toBlock, topics, address} = options;
 
     return this.query
       .send<Eth.raw.ILogResult[]>(
@@ -402,9 +375,8 @@ export class Eth {
           toBlock: isTag(toBlock) ? toBlock : toHex(toBlock, null),
         }),
       )
-      .then(raws => Array.isArray(raws)
-        ? raws.map(raw => Eth.prepareLogResult(raw))
-        : [],
+      .then(raws =>
+        Array.isArray(raws) ? raws.map(raw => Eth.prepareLogResult(raw)) : [],
       );
   }
 }

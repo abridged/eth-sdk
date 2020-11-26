@@ -17,6 +17,4 @@ export * from './web3';
 export * from './constants';
 export * from './types';
 
-export {
-  abi,
-};
+export {abi};

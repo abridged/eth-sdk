@@ -1,6 +1,6 @@
 import BN from 'bn.js';
-import { toNumberString } from './number';
-import { TQuantity } from './types';
+import {toNumberString} from './number';
+import {TQuantity} from './types';
 
 export enum Units {
   Wei = 'Wei',
@@ -35,7 +35,11 @@ export function toWei(value: TQuantity, unit: Units = Units.Eth): BN {
   return result;
 }
 
-export function toEth(value: TQuantity, unit: Units = Units.Wei, precision = 6): string {
+export function toEth(
+  value: TQuantity,
+  unit: Units = Units.Wei,
+  precision = 6,
+): string {
   let result: string = null;
 
   if (unit === Units.Ether) {
@@ -55,6 +59,4 @@ export function toEth(value: TQuantity, unit: Units = Units.Wei, precision = 6):
   return result;
 }
 
-export {
-  toEth as toEther,
-};
+export {toEth as toEther};

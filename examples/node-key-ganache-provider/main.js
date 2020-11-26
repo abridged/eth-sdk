@@ -1,7 +1,8 @@
 const ganache = require('ganache-core');
-const { Query, Key, randomHex, randomAddress, toWei } = require('eth-sdk');
+const {Query, Key, randomHex, randomAddress, toWei} = require('eth-sdk');
 
-const MNEMONIC = 'silent add cereal habit burger upset burden protect promote fly thumb cloud';
+const MNEMONIC =
+  'silent add cereal habit burger upset burden protect promote fly thumb cloud';
 
 async function main() {
   const provider = ganache.provider({
@@ -21,9 +22,7 @@ async function main() {
 
   const key = Key.createLocalKeyFromMnemonic(MNEMONIC, query);
 
-  query
-    .currentProvider
-    .addExtension(key);
+  query.currentProvider.addExtension(key);
 
   console.log('query.eth.accounts[0]:', (await query.eth.accounts)[0]);
   console.log('query.eth.sign[0]:', await query.eth.sign(key.address, message));
@@ -40,10 +39,14 @@ async function main() {
     from: key.address,
   });
 
-  console.log('transaction:', JSON.stringify(await query.eth.getTransaction(hash), null, 2));
-  console.log('transactionReceipt:', JSON.stringify(await query.eth.getTransactionReceipt(hash), null, 2));
-
+  console.log(
+    'transaction:',
+    JSON.stringify(await query.eth.getTransaction(hash), null, 2),
+  );
+  console.log(
+    'transactionReceipt:',
+    JSON.stringify(await query.eth.getTransactionReceipt(hash), null, 2),
+  );
 }
 
-main()
-  .catch(console.log);
+main().catch(console.log);

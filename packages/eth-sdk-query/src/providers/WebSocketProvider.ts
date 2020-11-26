@@ -1,6 +1,6 @@
-import { BehaviorSubject, throwError, from } from 'rxjs';
-import { filter, timeoutWith, mergeMap, take, tap, map } from 'rxjs/operators';
-import { IProvider } from './interfaces';
+import {BehaviorSubject, throwError, from} from 'rxjs';
+import {filter, timeoutWith, mergeMap, take, tap, map} from 'rxjs/operators';
+import {IProvider} from './interfaces';
 
 export class WebSocketProvider implements IProvider {
   public static DEFAULT_RECONNECT_TIME = 5000;
@@ -12,11 +12,7 @@ export class WebSocketProvider implements IProvider {
     if (option) {
       result = option;
     } else {
-      result = (
-        typeof WebSocket !== 'undefined'
-      )
-        ? WebSocket
-        : null;
+      result = typeof WebSocket !== 'undefined' ? WebSocket : null;
     }
 
     if (!result) {
@@ -44,7 +40,9 @@ export class WebSocketProvider implements IProvider {
     private endpoint: string,
     options: WebSocketProvider.IOptions = {},
   ) {
-    this.webSocketConstructor = WebSocketProvider.detectWebSocketConstructor(options.webSocketConstructor);
+    this.webSocketConstructor = WebSocketProvider.detectWebSocketConstructor(
+      options.webSocketConstructor,
+    );
 
     this.options = {
       connect: false,
@@ -54,27 +52,26 @@ export class WebSocketProvider implements IProvider {
       webSocketConstructor: null,
     };
 
-    this
-      .state$
+    this.state$
       .pipe(
         map(state => state === WebSocketProvider.States.Connected),
         filter(value => value !== this.connected$.getValue()),
       )
       .subscribe(this.connected$);
 
-    this
-      .state$
+    this.state$
       .pipe(
         filter(state => state === WebSocketProvider.States.Connected),
-        mergeMap(() => from(this.pendingRequests.slice(0, this.pendingRequests.length))),
+        mergeMap(() =>
+          from(this.pendingRequests.slice(0, this.pendingRequests.length)),
+        ),
       )
       .subscribe(this.request$);
 
-    this
-      .request$
+    this.request$
       .pipe(
         filter(request => !!request),
-        tap((request) => {
+        tap(request => {
           this.connection.send(JSON.stringify(request));
         }),
       )
@@ -101,7 +98,10 @@ export class WebSocketProvider implements IProvider {
     return this.error$.getValue();
   }
 
-  public send(request: IProvider.IJsonRpcRequest, callback: IProvider.TCallback): void {
+  public send(
+    request: IProvider.IJsonRpcRequest,
+    callback: IProvider.TCallback,
+  ): void {
     if (!this.state) {
       this.connect();
     }
@@ -112,17 +112,17 @@ export class WebSocketProvider implements IProvider {
       this.pendingRequests.push(request);
     }
 
-    const { requestTimeout } = this.options;
-    const { id } = request;
+    const {requestTimeout} = this.options;
+    const {id} = request;
 
-    this
-      .response$
+    this.response$
       .pipe(
         filter(response => response && id === response.id),
         take(1),
-        timeoutWith(requestTimeout, throwError(
-          new Error('request timeout ...'),
-        )),
+        timeoutWith(
+          requestTimeout,
+          throwError(new Error('request timeout ...')),
+        ),
       )
       .subscribe({
         error: err => callback(err),
@@ -165,7 +165,7 @@ export class WebSocketProvider implements IProvider {
     const openHandler = () => removeConnectHandlers();
     const errorHandler = (err: any) => removeConnectHandlers(err);
 
-    removeConnectHandlers = (err) => {
+    removeConnectHandlers = err => {
       this.connection.removeEventListener('open', openHandler);
       this.connection.removeEventListener('error', errorHandler);
 
@@ -187,7 +187,6 @@ export class WebSocketProvider implements IProvider {
           }
           break;
       }
-
     };
 
     this.connection = new this.webSocketConstructor(this.endpoint);
@@ -196,7 +195,7 @@ export class WebSocketProvider implements IProvider {
   }
 
   private reconnect(): void {
-    const { reconnectTime } = this.options;
+    const {reconnectTime} = this.options;
 
     this.reconnectTimeout = setTimeout(() => {
       this.reconnectTimeout = null;
@@ -223,16 +222,15 @@ export class WebSocketProvider implements IProvider {
     this.connection.removeEventListener('error', this.errorHandler);
   }
 
-  private messageHandler({ data }: WebSocketEventMap['message']): void {
+  private messageHandler({data}: WebSocketEventMap['message']): void {
     try {
       const parsed: any = JSON.parse(data);
-      const { id } = parsed as IProvider.IJsonRpcResponse;
+      const {id} = parsed as IProvider.IJsonRpcResponse;
 
       if (id) {
         this.response$.next(parsed);
       } else {
-
-        const { method, params } = parsed as IProvider.IJsonRpcSubscription;
+        const {method, params} = parsed as IProvider.IJsonRpcSubscription;
         if (method === 'eth_subscription') {
           this.notification$.next(params);
         }
@@ -260,7 +258,7 @@ export class WebSocketProvider implements IProvider {
 
 export namespace WebSocketProvider {
   export interface IWebSocketConstructor {
-    new(url: string, protocols?: string | string[]): WebSocket;
+    new (url: string, protocols?: string | string[]): WebSocket;
   }
 
   export interface IOptions {

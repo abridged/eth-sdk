@@ -1,4 +1,4 @@
-import { toWei, toEth, Units } from './units';
+import {toWei, toEth, Units} from './units';
 
 test('toWei', () => {
   expect(toWei(1, Units.Wei).toString()).toBe('1');

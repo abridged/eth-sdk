@@ -1,7 +1,7 @@
-import { Subject } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
-import { IQuery } from '../interfaces';
-import { Eth } from './Eth';
+import {Subject} from 'rxjs';
+import {map, filter} from 'rxjs/operators';
+import {IQuery} from '../interfaces';
+import {Eth} from './Eth';
 
 export class Subscription {
   public log$ = new Subject<Subscription.ILog>();
@@ -9,9 +9,7 @@ export class Subscription {
   private root: any = null;
   private subjectsMap = new Map<string, Subscription.ISubject>();
 
-  constructor(
-    private query: IQuery,
-  ) {
+  constructor(private query: IQuery) {
     //
   }
 
@@ -21,31 +19,25 @@ export class Subscription {
   ): Promise<Subscription.ISubject<Subscription.IResult[T]>> {
     let result: Subscription.ISubject = null;
 
-    const params: any[] = [
-      type,
-      options,
-    ];
+    const params: any[] = [type, options];
 
     const id = await this.createSubscriptionId(params);
 
     if (id) {
-      result = (new Subject<any>()) as any;
+      result = new Subject<any>() as any;
       result.id = id;
       result.params = params;
 
-      this
-        .query
-        .currentProvider
-        .notification$
+      this.query.currentProvider.notification$
         .pipe(
-          filter(notification => (
-            notification &&
-            notification.subscription === result.id
-          )),
-          map((notification) => {
+          filter(
+            notification =>
+              notification && notification.subscription === result.id,
+          ),
+          map(notification => {
             let result: any = null;
 
-            const { result: raw } = notification;
+            const {result: raw} = notification;
 
             switch (type) {
               case Subscription.Types.NewHeads:
@@ -74,16 +66,10 @@ export class Subscription {
       };
 
       if (!this.root) {
-        this.root = this
-          .query
-          .currentProvider
-          .connected$
-          .pipe(
-            filter(value => !!value),
-          )
-          .subscribe(() => this
-            .resubscribeAll(false)
-            .catch((err) => {
+        this.root = this.query.currentProvider.connected$
+          .pipe(filter(value => !!value))
+          .subscribe(() =>
+            this.resubscribeAll(false).catch(err => {
               this.log$.next({
                 type: Subscription.LogTypes.Error,
                 data: err,
@@ -119,11 +105,10 @@ export class Subscription {
   }
 
   private async createSubscriptionId(params: any[]): Promise<string> {
-    const result = this.query
-      .send<string>(
-        Eth.Methods.Subscribe,
-        ...params.filter(value => !!value),
-      );
+    const result = this.query.send<string>(
+      Eth.Methods.Subscribe,
+      ...params.filter(value => !!value),
+    );
 
     this.log$.next({
       type: Subscription.LogTypes.Subscribed,
@@ -134,11 +119,7 @@ export class Subscription {
   }
 
   private async destroySubscriptionId(id: string): Promise<void> {
-    await this.query
-      .send<string>(
-        Eth.Methods.Unsubscribe,
-        id,
-      );
+    await this.query.send<string>(Eth.Methods.Unsubscribe, id);
 
     this.log$.next({
       type: Subscription.LogTypes.Unsubscribed,

@@ -1,19 +1,25 @@
-import { randomHex } from './hex';
-import { randomPrivateKey, privateToPublicKey, publicKeyToAddress } from './secp256k1';
-import { recoverAddressFromTypedMessage, signTypedMessage } from './typedMessage';
+import {randomHex} from './hex';
+import {
+  randomPrivateKey,
+  privateToPublicKey,
+  publicKeyToAddress,
+} from './secp256k1';
+import {recoverAddressFromTypedMessage, signTypedMessage} from './typedMessage';
 
 test('recoverAddressFromTypedMessage', () => {
   const privateKey = randomPrivateKey();
-  const publicKey =  privateToPublicKey(privateKey);
+  const publicKey = privateToPublicKey(privateKey);
   const address = publicKeyToAddress(publicKey);
   const message = randomHex(128);
 
   const typedData = JSON.stringify({
     types: {
-      Mail: [{
-        name: 'message',
-        type: 'bytes32',
-      }],
+      Mail: [
+        {
+          name: 'message',
+          type: 'bytes32',
+        },
+      ],
     },
     primaryType: 'Mail',
     message: {

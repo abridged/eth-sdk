@@ -1,5 +1,5 @@
-import { Eth, Net, Subscription } from './modules';
-import { RootProvider } from './providers';
+import {Eth, Net, Subscription} from './modules';
+import {RootProvider} from './providers';
 
 export interface IQuery {
   readonly eth: Eth;

@@ -1,26 +1,48 @@
-import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { WithQuery, IQuery, queryModules } from '@eth-sdk/query';
-import { abi, keccak256, TTagOrQuantity, toChecksumAddress, isAddress, concatHex } from '@eth-sdk/utils';
+import {Subject} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {WithQuery, IQuery, queryModules} from '@eth-sdk/query';
+import {
+  abi,
+  keccak256,
+  TTagOrQuantity,
+  toChecksumAddress,
+  isAddress,
+  concatHex,
+} from '@eth-sdk/utils';
 
-export class Contract<F = null, E = null, K = E extends null ? string : keyof E> extends WithQuery {
-  protected static buildSignature(methodName: string, params: abi.IItemParam[]): string {
-    return keccak256(`${methodName}(${params.map(({ type }) => type).join(',')})`);
+export class Contract<
+  F = null,
+  E = null,
+  K = E extends null ? string : keyof E
+> extends WithQuery {
+  protected static buildSignature(
+    methodName: string,
+    params: abi.IItemParam[],
+  ): string {
+    return keccak256(
+      `${methodName}(${params.map(({type}) => type).join(',')})`,
+    );
   }
 
-  public readonly allEvents: E extends null ? Contract.IEvent : Contract.IEvent<K>;
+  public readonly allEvents: E extends null
+    ? Contract.IEvent
+    : Contract.IEvent<K>;
 
-  public readonly events: E extends null ? {
-    [key: string]: Contract.IEvent & Contract.IWithSignature;
-  } : {
-    [K in keyof E]: Contract.IEvent<K, E[K]> & Contract.IWithSignature;
-  };
+  public readonly events: E extends null
+    ? {
+        [key: string]: Contract.IEvent & Contract.IWithSignature;
+      }
+    : {
+        [K in keyof E]: Contract.IEvent<K, E[K]> & Contract.IWithSignature;
+      };
 
-  public readonly methods: F extends null ? {
-    [key: string]: Contract.TMethod & Contract.IWithSignature;
-  } : {
-    [K in keyof F]: F[K] & Contract.IWithSignature;
-  };
+  public readonly methods: F extends null
+    ? {
+        [key: string]: Contract.TMethod & Contract.IWithSignature;
+      }
+    : {
+        [K in keyof F]: F[K] & Contract.IWithSignature;
+      };
 
   protected currentAddress: string;
 
@@ -49,7 +71,7 @@ export class Contract<F = null, E = null, K = E extends null ? string : keyof E>
     };
 
     for (const abiItem of abiItems) {
-      const { type, constant, name, inputs, outputs, payable } = abiItem;
+      const {type, constant, name, inputs, outputs, payable} = abiItem;
 
       switch (type) {
         case 'event': {
@@ -58,8 +80,8 @@ export class Contract<F = null, E = null, K = E extends null ? string : keyof E>
             name,
             signature,
             inputs: {
-              indexed: inputs.filter(({ indexed }) => indexed),
-              nonIndexed: inputs.filter(({ indexed }) => !indexed),
+              indexed: inputs.filter(({indexed}) => indexed),
+              nonIndexed: inputs.filter(({indexed}) => !indexed),
             },
           };
 
@@ -106,11 +128,7 @@ export class Contract<F = null, E = null, K = E extends null ? string : keyof E>
   }
 
   public at(address: string): Contract<F, E, K> {
-    return new Contract<F, E, K>(
-      this.abiItems,
-      address,
-      this.query,
-    );
+    return new Contract<F, E, K>(this.abiItems, address, this.query);
   }
 
   protected getAddress(optional: string = null): string {
@@ -131,7 +149,7 @@ export class Contract<F = null, E = null, K = E extends null ? string : keyof E>
     const mappedEvents = this.eventsMap.names.values();
 
     for (const mappedEvent of mappedEvents) {
-      const { name, signature } = mappedEvent;
+      const {name, signature} = mappedEvent;
 
       result[name] = {
         signature,
@@ -150,22 +168,21 @@ export class Contract<F = null, E = null, K = E extends null ? string : keyof E>
     const mappedMethods = this.methodsMap.names.values();
 
     for (const mappedMethod of mappedMethods) {
-      const { name, signature, inputs, constant, outputs } = mappedMethod;
+      const {name, signature, inputs, constant, outputs} = mappedMethod;
 
       const method: any = (...args: any[]) => {
-        const data = concatHex(
-          signature,
-          abi.encode(inputs, args),
-        );
+        const data = concatHex(signature, abi.encode(inputs, args));
 
         return {
           data,
-          call: async (options: Partial<queryModules.Eth.ICallOptions> = {}) => {
+          call: async (
+            options: Partial<queryModules.Eth.ICallOptions> = {},
+          ) => {
             if (!constant) {
               throw new Error('call unsupported');
             }
 
-            const { to } = options;
+            const {to} = options;
 
             const output = await this.query.eth.call({
               data,
@@ -175,18 +192,14 @@ export class Contract<F = null, E = null, K = E extends null ? string : keyof E>
             return abi.decode(outputs, output);
           },
 
-          estimate: async (options: Partial<queryModules.Eth.ICallOptions> = {}) => {
+          estimate: async (
+            options: Partial<queryModules.Eth.ICallOptions> = {},
+          ) => {
             if (constant) {
               throw new Error('estimate unsupported');
             }
 
-            const {
-              to,
-              from,
-              gasPrice,
-              gas,
-              value,
-            } = options;
+            const {to, from, gasPrice, gas, value} = options;
 
             return this.query.eth.estimateGas({
               from,
@@ -198,19 +211,14 @@ export class Contract<F = null, E = null, K = E extends null ? string : keyof E>
             });
           },
 
-          send: async (options: Partial<queryModules.Eth.ISendTransactionOptions> = {}) => {
+          send: async (
+            options: Partial<queryModules.Eth.ISendTransactionOptions> = {},
+          ) => {
             if (constant) {
               throw new Error('send unsupported');
             }
 
-            const {
-              to,
-              from,
-              gasPrice,
-              gas,
-              nonce,
-              value,
-            } = options;
+            const {to, from, gasPrice, gas, nonce, value} = options;
 
             return this.query.eth.sendTransaction({
               from,
@@ -248,36 +256,38 @@ export class Contract<F = null, E = null, K = E extends null ? string : keyof E>
       subscribeLogs: async () => {
         const result = new Subject<Contract.IEventLog>();
         const subject = await this.query.subscription.create(
-          queryModules.Subscription.Types.Logs, {
+          queryModules.Subscription.Types.Logs,
+          {
             topics,
             address: this.address,
           },
         );
 
-        subject
-          .pipe(
-            map(log => this.prepareEventLog(log)),
-          )
-          .subscribe(result);
+        subject.pipe(map(log => this.prepareEventLog(log))).subscribe(result);
 
         return result;
       },
     };
   }
 
-  protected prepareEventLog(log: queryModules.Eth.ILogResult): Contract.IEventLog {
+  protected prepareEventLog(
+    log: queryModules.Eth.ILogResult,
+  ): Contract.IEventLog {
     let event: any = null;
     let payload: any = {};
 
-    let { topics } = log;
+    let {topics} = log;
     let signature: string;
-    ([signature, ...topics] = topics);
+    [signature, ...topics] = topics;
 
     const mappedEvent = this.eventsMap.signatures.get(signature);
 
     if (mappedEvent) {
-      const { name, inputs: { indexed, nonIndexed } } = mappedEvent;
-      const { data } = log;
+      const {
+        name,
+        inputs: {indexed, nonIndexed},
+      } = mappedEvent;
+      const {data} = log;
 
       event = name;
 
@@ -310,8 +320,8 @@ export namespace Contract {
     name: string;
     signature: string;
     inputs: {
-      indexed: abi.IItemInput[],
-      nonIndexed: abi.IItemInput[],
+      indexed: abi.IItemInput[];
+      nonIndexed: abi.IItemInput[];
     };
   }
 
@@ -334,7 +344,8 @@ export namespace Contract {
     subscribeLogs(): Promise<Subject<IEventLog<E, P>>>;
   }
 
-  export interface IEventLog<E = string, P = any> extends queryModules.Eth.ILogResult {
+  export interface IEventLog<E = string, P = any>
+    extends queryModules.Eth.ILogResult {
     event: E;
     payload: P;
   }
@@ -353,6 +364,8 @@ export namespace Contract {
 
     estimate(options?: Partial<queryModules.Eth.ICallOptions>): Promise<number>;
 
-    send(options?: Partial<queryModules.Eth.ISendTransactionOptions>): Promise<string>;
+    send(
+      options?: Partial<queryModules.Eth.ISendTransactionOptions>,
+    ): Promise<string>;
   }
 }

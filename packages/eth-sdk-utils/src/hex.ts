@@ -1,7 +1,7 @@
-import { randomBytes } from 'crypto';
+import {randomBytes} from 'crypto';
 import BN from 'bn.js';
-import { BUFFER_TEXT_ENCODING, HEX_PREFIX } from './constants';
-import { isEmpty } from './helpers';
+import {BUFFER_TEXT_ENCODING, HEX_PREFIX} from './constants';
+import {isEmpty} from './helpers';
 
 export function randomHex(size: number): string {
   return toHex(randomBytes(size));
@@ -19,7 +19,11 @@ export function concatHex(...values: any[]): string {
   return `${HEX_PREFIX}${values.map(value => toHex(value).slice(2)).join('')}`;
 }
 
-export function padHex(value: any, bytes: number, direction: 'left' | 'right'): string {
+export function padHex(
+  value: any,
+  bytes: number,
+  direction: 'left' | 'right',
+): string {
   let result: string = null;
 
   const hex = toHex(value);
@@ -57,7 +61,11 @@ export function padHexRight(value: any, bytes: number = 32) {
   return padHex(value, bytes, 'right');
 }
 
-export function toHex(value: any, defaultValue = '0x', forceEven = false): string {
+export function toHex(
+  value: any,
+  defaultValue = '0x',
+  forceEven = false,
+): string {
   let result: string = null;
 
   if (!isEmpty(value)) {
@@ -101,14 +109,13 @@ export function toHex(value: any, defaultValue = '0x', forceEven = false): strin
   return result || defaultValue;
 }
 
-export function isHex(value: string, type: 'quantity' | 'data' = null): boolean {
+export function isHex(
+  value: string,
+  type: 'quantity' | 'data' = null,
+): boolean {
   let result = false;
 
-  if (
-    value &&
-    typeof value === 'string' &&
-    value.startsWith(HEX_PREFIX)
-  ) {
+  if (value && typeof value === 'string' && value.startsWith(HEX_PREFIX)) {
     value = value.toLowerCase();
 
     const length = value.length;
@@ -118,11 +125,7 @@ export function isHex(value: string, type: 'quantity' | 'data' = null): boolean 
       (type === 'quantity' && length > 2) ||
       (type === 'data' && length % 2 === 0)
     ) {
-
-      if (
-        type === 'quantity' &&
-        value.charCodeAt(2) === 48
-      ) {
+      if (type === 'quantity' && value.charCodeAt(2) === 48) {
         result = length === 3;
       } else {
         result = true;

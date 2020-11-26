@@ -1,4 +1,4 @@
-import { IQuery } from './interfaces';
+import {IQuery} from './interfaces';
 
 export abstract class WithQuery {
   private currentQuery: IQuery = null;

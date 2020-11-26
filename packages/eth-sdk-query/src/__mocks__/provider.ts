@@ -1,5 +1,5 @@
-import { Eth, Net } from '../modules';
-import { IProvider } from '../providers';
+import {Eth, Net} from '../modules';
+import {IProvider} from '../providers';
 
 /**
  * see: https://github.com/ethereum/wiki/wiki/JSON-RPC
@@ -24,8 +24,11 @@ export const provider: IProvider & {
 
     return result;
   },
-  send(request: IProvider.IJsonRpcRequest, callback: IProvider.TCallback): void {
-    const { method, id, jsonrpc } = request;
+  send(
+    request: IProvider.IJsonRpcRequest,
+    callback: IProvider.TCallback,
+  ): void {
+    const {method, id, jsonrpc} = request;
 
     callback(null, {
       id,

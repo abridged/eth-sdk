@@ -1,9 +1,5 @@
 export function isEmpty(value: any): boolean {
-  return (
-    value === null ||
-    value === undefined ||
-    Number.isNaN(value)
-  );
+  return value === null || value === undefined || Number.isNaN(value);
 }
 
 export function toRaw(object: any): any {
@@ -11,7 +7,7 @@ export function toRaw(object: any): any {
 }
 
 export function cleanEmpty(object: any): any {
-  object = object as { [key: string]: any };
+  object = object as {[key: string]: any};
 
   for (const key in object) {
     if (isEmpty(object[key])) {

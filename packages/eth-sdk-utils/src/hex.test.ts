@@ -1,4 +1,4 @@
-import { isHex } from './hex';
+import {isHex} from './hex';
 
 test('isHex type=quantity', () => {
   expect(isHex('0x101', 'quantity')).toBeTruthy();

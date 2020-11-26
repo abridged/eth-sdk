@@ -1,8 +1,8 @@
 import BN from 'bn.js';
-import { toBN } from './bn';
-import { isEmpty } from './helpers';
-import { isHex } from './hex';
-import { TQuantity } from './types';
+import {toBN} from './bn';
+import {isEmpty} from './helpers';
+import {isHex} from './hex';
+import {TQuantity} from './types';
 
 export function toNumber(value: any, defaultValue: number = null): number {
   let result: number = null;
@@ -31,12 +31,13 @@ export function toNumber(value: any, defaultValue: number = null): number {
       break;
   }
 
-  return isEmpty(result)
-    ? defaultValue
-    : result;
+  return isEmpty(result) ? defaultValue : result;
 }
 
-export function toNumberString(value: TQuantity, options: toNumberString.IOptions = {}): string {
+export function toNumberString(
+  value: TQuantity,
+  options: toNumberString.IOptions = {},
+): string {
   let result: string = null;
 
   switch (typeof value) {
@@ -64,7 +65,7 @@ export function toNumberString(value: TQuantity, options: toNumberString.IOption
   if (result) {
     result = trimNumberString(result);
 
-    const { shift, precision } = options;
+    const {shift, precision} = options;
 
     if (shift) {
       if (!result.includes('.')) {

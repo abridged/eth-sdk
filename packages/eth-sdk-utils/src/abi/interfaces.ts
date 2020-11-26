@@ -1,6 +1,6 @@
-import { TType, TItemStateMutability, TItemType } from './types';
+import {TType, TItemStateMutability, TItemType} from './types';
 
-export interface IEncodedArg<T = any>  {
+export interface IEncodedArg<T = any> {
   type: TType;
   value: T;
 }
