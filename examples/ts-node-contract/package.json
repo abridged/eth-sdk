@@ -13,5 +13,17 @@
     "node-fetch": "^2.6.1",
     "ts-node": "^9.0.0",
     "typescript": "^4.1.2"
+  },
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "author": {
+    "name": "Stanislaw Glogowski",
+    "email": "hello@newobject.pl"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abridged/eth-sdk.git",
+    "directory": "examples/ts-node-contract"
   }
 }

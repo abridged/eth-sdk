@@ -10,5 +10,15 @@
     "@types/node": "12.12.9",
     "eth-sdk": "^0.2.10",
     "node-fetch": "^2.6.1"
+  },
+  "author": {
+    "name": "Stanislaw Glogowski",
+    "email": "hello@newobject.pl"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abridged/eth-sdk.git",
+    "directory": "examples/node-query-http-provider"
   }
 }

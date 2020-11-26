@@ -9,13 +9,14 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/abridged/eth-sdk.git"
+    "url": "https://github.com/abridged/eth-sdk.git",
+    "directory": "packages/eth-sdk-utils"
   },
   "bugs": {
     "url": "https://github.com/abridged/eth-sdk/issues"
   },
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "lint": "tslint --project ./tsconfig.json --exclude ./src/**/*.d.ts ./src/**/*.ts",
     "clean": "rimraf ./build",
@@ -49,5 +50,8 @@
     "verbose": true,
     "preset": "ts-jest",
     "testEnvironment": "node"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
