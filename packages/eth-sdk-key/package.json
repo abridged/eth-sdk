@@ -21,7 +21,7 @@
     "clean": "rimraf ./build",
     "prebuild": "npm run clean",
     "build": "npm run compile",
-    "compile": "tsc --project ./tsconfig.build.json --rootDir ./src",
+    "compile": "tsc -b",
     "compile-watch": "npm run compile -- --watch --preserveWatchOutput",
     "test": "jest --passWithNoTests",
     "test-watch": "jest --watchAll --passWithNoTests"

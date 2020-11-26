@@ -1,11 +1,10 @@
 {
-  "extends": "../../tsconfig",
+  "extends": "../../tsconfig-base",
   "compilerOptions": {
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "outDir": "build",
+    "rootDir": "src",
+    "composite": true
   },
-  "include": [
-    "./src/**/*"
-  ]
+  "include": ["src"],
+  "references": []
 }

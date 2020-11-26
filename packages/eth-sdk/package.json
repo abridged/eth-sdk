@@ -21,7 +21,7 @@
     "clean": "rimraf ./build",
     "prebuild": "npm run clean",
     "build": "npm run compile",
-    "compile": "tsc --project ./tsconfig.json --rootDir ./src",
+    "compile": "tsc -b",
     "compile-watch": "npm run compile -- --watch --preserveWatchOutput"
   },
   "dependencies": {
