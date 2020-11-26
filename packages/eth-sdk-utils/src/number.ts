@@ -9,7 +9,7 @@ import {isEmpty} from './helpers';
 import {isHex} from './hex';
 import {TQuantity} from './types';
 
-export function toNumber(value: any, defaultValue: number = null): number {
+export function toNumber(value: unknown, defaultValue: number = null): number {
   let result: number = null;
 
   switch (typeof value) {

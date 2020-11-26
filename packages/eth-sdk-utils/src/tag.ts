@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-export function isTag(tag: any): boolean {
+export function isTag(tag: unknown): boolean {
   let result = false;
 
   switch (tag) {

@@ -4,6 +4,9 @@
 
 !.prettier*
 
+!.eslintignore
+!.eslintrc.js
+
 *.log
 npm-debug.log*
 lerna-debug.log*

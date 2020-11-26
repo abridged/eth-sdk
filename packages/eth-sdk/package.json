@@ -37,7 +37,7 @@
     "tslint": "5.20.1",
     "tslint-config-airbnb": "5.11.2",
     "tsutils": "3.17.1",
-    "typescript": "^4.1.2"
+    "typescript": "~4.1.2"
   },
   "publishConfig": {
     "access": "public"
