@@ -82,6 +82,8 @@ export function toHex(value: any, defaultValue = '0x', forceEven = false): strin
             result = value.toString('hex');
           } else if (Buffer.isBuffer(value)) {
             result = value.toString('hex');
+          } else if (value instanceof Uint8Array) {
+            result = Buffer.from(value.buffer).toString('hex');
           }
           break;
       }
