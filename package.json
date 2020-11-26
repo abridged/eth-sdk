@@ -18,7 +18,8 @@
   "scripts": {
     "lint": "lerna run --stream lint",
     "bootstrap": "lerna bootstrap",
-    "prebuild": "npm run bootstrap",
+    "postinstall": "npm run bootstrap",
+    "clean": "lerna run --stream clean",
     "build": "tsc -b",
     "precompile-watch": "npm run build",
     "compile-watch": "lerna run --parallel compile-watch",

@@ -19,7 +19,7 @@
   "types": "build/index.d.ts",
   "scripts": {
     "lint": "tslint --project ./tsconfig.json --exclude ./src/**/*.d.ts ./src/**/*.ts",
-    "clean": "rimraf ./build",
+    "clean": "rimraf ./build *.tsbuildinfo",
     "prebuild": "npm run clean",
     "build": "npm run compile",
     "compile": "tsc -b",
