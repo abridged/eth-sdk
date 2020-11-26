@@ -1,3 +1,8 @@
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/utils
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {publicKeyVerify, privateKeyVerify, publicKeyCreate} from 'secp256k1';
 import {HEX_PREFIX} from './constants';
 import {toChecksumAddress} from './address';

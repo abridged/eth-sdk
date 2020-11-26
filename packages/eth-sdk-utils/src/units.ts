@@ -1,3 +1,8 @@
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/utils
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import BN from 'bn.js';
 import {toNumberString} from './number';
 import {TQuantity} from './types';

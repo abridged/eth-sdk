@@ -1,3 +1,8 @@
+// Copyright Abridged Inc. 2020. All Rights Reserved.
+// Node module: @eth-sdk/utils
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {recoverTypedSignature_v4, signTypedData_v4} from 'eth-sig-util';
 import {toChecksumAddress} from './address';
 import {toBuffer} from './buffer';

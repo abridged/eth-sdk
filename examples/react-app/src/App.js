@@ -1,3 +1,8 @@
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: react-app
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {Query} from 'eth-sdk';
 import React from 'react';
 import './App.css';

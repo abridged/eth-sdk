@@ -1,3 +1,8 @@
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: node-key-ganache-provider
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 const ganache = require('ganache-core');
 const {Query, Key, randomHex, randomAddress, toWei} = require('eth-sdk');
 

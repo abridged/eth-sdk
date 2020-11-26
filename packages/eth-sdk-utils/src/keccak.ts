@@ -1,3 +1,8 @@
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/utils
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {keccak_256} from 'js-sha3';
 import {toBuffer} from './buffer';
 import {HEX_PREFIX} from './constants';

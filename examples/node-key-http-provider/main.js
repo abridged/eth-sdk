@@ -1,3 +1,8 @@
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: node-key-http-provider
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 const {Query, Key, queryProviders, randomAddress, toWei} = require('eth-sdk');
 const fetch = require('node-fetch');
 

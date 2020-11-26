@@ -1,3 +1,8 @@
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: node-query-websocket-provider
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 const {Query, queryProviders, sleep} = require('eth-sdk');
 const webSocketConstructor = require('ws');
 
