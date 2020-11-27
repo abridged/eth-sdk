@@ -1,10 +1,15 @@
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/utils
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import BN from 'bn.js';
-import { toChecksumAddress } from '../address';
-import { HEX_PREFIX, BUFFER_TEXT_ENCODING } from '../constants';
-import { isHex } from '../hex';
-import { parseType } from './sharedHelpers';
-import { IItemParam, IDecoded } from './interfaces';
-import { TType } from './types';
+import {toChecksumAddress} from '../address';
+import {HEX_PREFIX, BUFFER_TEXT_ENCODING} from '../constants';
+import {isHex} from '../hex';
+import {parseType} from './sharedHelpers';
+import {IItemParam, IDecoded} from './interfaces';
+import {TType} from './types';
 
 function decodeNonArrayData(mainType: TType, data: string): any {
   let result: any = null;
@@ -13,23 +18,18 @@ function decodeNonArrayData(mainType: TType, data: string): any {
     mainType = 'uint256';
   }
 
-  if (
-    mainType === 'bytes' ||
-    mainType === 'string'
-  ) {
+  if (mainType === 'bytes' || mainType === 'string') {
     const size = parseInt(data.slice(0, 64), 16) * 2;
     result = data.slice(64, 64 + size);
 
-    result = mainType === 'bytes'
-      ? `0x${result}`
-      : Buffer.from(result, 'hex').toString(BUFFER_TEXT_ENCODING);
-
+    result =
+      mainType === 'bytes'
+        ? `0x${result}`
+        : Buffer.from(result, 'hex').toString(BUFFER_TEXT_ENCODING);
   } else {
     switch (mainType) {
       case 'address':
-        result = toChecksumAddress(
-          `${HEX_PREFIX}${data.slice(24)}`,
-        );
+        result = toChecksumAddress(`${HEX_PREFIX}${data.slice(24)}`);
         break;
 
       case 'bool':
@@ -37,7 +37,7 @@ function decodeNonArrayData(mainType: TType, data: string): any {
         break;
 
       default:
-        const { type, bytes } = parseType(mainType);
+        const {type, bytes} = parseType(mainType);
 
         switch (type) {
           case 'uint':
@@ -54,21 +54,25 @@ function decodeNonArrayData(mainType: TType, data: string): any {
   return result;
 }
 
-export function decode<T = IDecoded>(params: IItemParam[], data: string, indexed = true): T {
+export function decode<T = IDecoded>(
+  params: IItemParam[],
+  data: string,
+  indexed = true,
+): T {
   let result: IDecoded = null;
 
   if (isHex(data, 'data')) {
     result = indexed
       ? {
-        length: params.length,
-      }
+          length: params.length,
+        }
       : {};
 
     data = data.slice(2);
 
     for (let i = 0; i < params.length; i += 1) {
-      const { type } = params[i];
-      let { name } = params[i];
+      const {type} = params[i];
+      let {name} = params[i];
 
       if (!name) {
         name = 'result';
@@ -78,11 +82,7 @@ export function decode<T = IDecoded>(params: IItemParam[], data: string, indexed
 
       let paramData = data.slice(i * 64, (i + 1) * 64);
 
-      if (
-        type === 'string' ||
-        type === 'bytes' ||
-        type.endsWith('[]')
-      ) {
+      if (type === 'string' || type === 'bytes' || type.endsWith('[]')) {
         paramData = data.slice(parseInt(paramData, 16) * 2);
       }
 
@@ -95,19 +95,14 @@ export function decode<T = IDecoded>(params: IItemParam[], data: string, indexed
 
         const innerType = type.slice(0, -2);
 
-        if (
-          innerType === 'string' ||
-          innerType === 'bytes'
-        ) {
+        if (innerType === 'string' || innerType === 'bytes') {
           throw new Error(`${type} not supported`);
         }
 
         for (let j = 0; j < size; j += 1) {
           const innerData = paramData.slice((j + 1) * 64, (j + 2) * 64);
 
-          value.push(
-            decodeNonArrayData(innerType, innerData),
-          );
+          value.push(decodeNonArrayData(innerType, innerData));
         }
       } else {
         value = decodeNonArrayData(type, paramData);

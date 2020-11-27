@@ -1,12 +1,14 @@
 {
-  "extends": "../../tsconfig",
+  "extends": "../../tsconfig-base",
   "compilerOptions": {
     "outDir": "./build",
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "typeRoots": ["./node_modules/@types"],
+    "composite": true
   },
-  "include": [
-    "./src/**/*"
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../../packages/eth-sdk/tsconfig.json"
+    }
   ]
 }

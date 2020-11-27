@@ -1,17 +1,16 @@
-import {
-  Eth,
-  Net,
-  Subscription,
-} from './modules';
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/query
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {Eth, Net, Subscription} from './modules';
 import {
   RootProvider,
   HttpProvider,
   WebSocketProvider,
   IProvider,
 } from './providers';
-import {
-  IQuery,
-} from './interfaces';
+import {IQuery} from './interfaces';
 
 export class Query implements IQuery {
   public static defaultInstance: Query = null;
@@ -26,9 +25,7 @@ export class Query implements IQuery {
 
   public readonly currentProvider = new RootProvider();
 
-  constructor(
-    innerProvider: IProvider | string,
-  ) {
+  constructor(innerProvider: IProvider | string) {
     this.eth = new Eth(this);
     this.net = new Net(this);
     this.subscription = new Subscription(this);
@@ -69,7 +66,7 @@ export class Query implements IQuery {
 
     const response = await this.currentProvider.sendAsync(request);
 
-    const { id, result } = response;
+    const {id, result} = response;
 
     if (id !== request.id) {
       throw new Error('invalid response');

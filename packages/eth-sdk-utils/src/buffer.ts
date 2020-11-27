@@ -1,7 +1,15 @@
-import { BUFFER_TEXT_ENCODING } from './constants';
-import { isHex } from './hex';
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/utils
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
 
-export function toBuffer(value: string | Buffer, defaultValue: Buffer = Buffer.alloc(0)): Buffer {
+import {BUFFER_TEXT_ENCODING} from './constants';
+import {isHex} from './hex';
+
+export function toBuffer(
+  value: string | Buffer,
+  defaultValue: Buffer = Buffer.alloc(0),
+): Buffer {
   let result: Buffer = null;
 
   if (value) {

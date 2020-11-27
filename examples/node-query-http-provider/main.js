@@ -1,11 +1,15 @@
-const { Query, queryProviders } = require('eth-sdk');
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: node-query-http-provider
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+const {Query, queryProviders} = require('eth-sdk');
 const fetch = require('node-fetch');
 
 async function main() {
-  const provider = new queryProviders
-    .HttpProvider('https://kovan.infura.io/', {
-      fetch,
-    });
+  const provider = new queryProviders.HttpProvider('https://kovan.infura.io/', {
+    fetch,
+  });
 
   const query = new Query(provider);
 
@@ -13,5 +17,4 @@ async function main() {
   console.log('query.eth.chainId:', await query.eth.chainId);
 }
 
-main()
-  .catch(console.log);
+main().catch(console.log);

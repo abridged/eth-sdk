@@ -1,12 +1,22 @@
 {
-  "extends": "../../tsconfig",
+  "extends": "../../tsconfig-base",
   "compilerOptions": {
-    "outDir": "./build",
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "outDir": "build",
+    "composite": true
   },
-  "include": [
-    "./src/**/*"
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../eth-sdk-contract/tsconfig.json"
+    },
+    {
+      "path": "../eth-sdk-key/tsconfig.json"
+    },
+    {
+      "path": "../eth-sdk-query/tsconfig.json"
+    },
+    {
+      "path": "../eth-sdk-utils/tsconfig.json"
+    }
   ]
 }

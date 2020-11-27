@@ -1,6 +1,11 @@
-import { Subject } from 'rxjs';
-import { IProvider, IProviderExtension } from './interfaces';
-import { TProviderRawExtension, TProviderExtension } from './types';
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/query
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {Subject} from 'rxjs';
+import {IProvider, IProviderExtension} from './interfaces';
+import {TProviderRawExtension, TProviderExtension} from './types';
 
 export class RootProvider implements IProvider {
   private currentProvider: IProvider;
@@ -16,9 +21,7 @@ export class RootProvider implements IProvider {
   }
 
   public addExtension(...extensions: TProviderExtension[]): this {
-    this.extensions.push(
-      ...extensions,
-    );
+    this.extensions.push(...extensions);
     return this;
   }
 
@@ -27,7 +30,9 @@ export class RootProvider implements IProvider {
   }
 
   public removeExtension(...extensions: TProviderExtension[]): this {
-    this.extensions = this.extensions.filter(extension => !extensions.includes(extension));
+    this.extensions = this.extensions.filter(
+      extension => !extensions.includes(extension),
+    );
     return this;
   }
 
@@ -47,7 +52,10 @@ export class RootProvider implements IProvider {
     return this.currentProvider;
   }
 
-  public send(request: IProvider.IJsonRpcRequest, callback: IProvider.TCallback): void {
+  public send(
+    request: IProvider.IJsonRpcRequest,
+    callback: IProvider.TCallback,
+  ): void {
     if (!this.extensions.length) {
       this.innerProvider.send(request, callback);
       return;
@@ -57,7 +65,7 @@ export class RootProvider implements IProvider {
       try {
         let result: any = null;
 
-        const { jsonrpc, id, method, params } = request;
+        const {jsonrpc, id, method, params} = request;
 
         for (let extension of this.extensions) {
           switch (typeof extension) {
@@ -92,17 +100,18 @@ export class RootProvider implements IProvider {
       } catch (err) {
         callback(err);
       }
-    })()
-      .catch(() => null);
+    })().catch(() => null);
   }
 
-  public sendAsync(request: IProvider.IJsonRpcRequest): Promise<IProvider.IJsonRpcResponse> {
+  public sendAsync(
+    request: IProvider.IJsonRpcRequest,
+  ): Promise<IProvider.IJsonRpcResponse> {
     return new Promise((resolve, reject) => {
       this.send(request, (err, response) => {
         if (err) {
           reject(err);
         } else {
-          const { error } = response;
+          const {error} = response;
           if (error) {
             reject(error);
           } else {

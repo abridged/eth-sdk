@@ -6,12 +6,12 @@
     "start": "react-scripts start"
   },
   "dependencies": {
-    "@types/react": "16.9.11",
-    "@types/react-dom": "16.9.4",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "eth-sdk": "^0.2.10",
-    "react": "16.12.0",
-    "react-dom": "16.12.0",
-    "react-scripts": "3.2.0"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "^4.0.1"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -27,5 +27,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "author": {
+    "name": "Stanislaw Glogowski",
+    "email": "hello@newobject.pl"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abridged/eth-sdk.git",
+    "directory": "examples/react-app"
   }
 }

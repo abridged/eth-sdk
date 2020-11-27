@@ -1,13 +1,11 @@
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/key
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import HDNode from 'hdkey';
-import {
-  mnemonicToSeedSync,
-} from 'bip39';
-import {
-  IQuery,
-  WithQuery,
-  queryProviders,
-  queryModules,
-} from '@eth-sdk/query';
+import {mnemonicToSeedSync} from 'bip39';
+import {IQuery, WithQuery, queryProviders, queryModules} from '@eth-sdk/query';
 import {
   toHex,
   randomPrivateKey,
@@ -18,35 +16,36 @@ import {
   signTypedMessage,
   TData,
   TQuantity,
-  toChecksumAddress, toBuffer, toNumber,
+  toChecksumAddress,
+  toBuffer,
+  toNumber,
 } from '@eth-sdk/utils';
-import { Transaction } from 'ethereumjs-tx';
+import {Transaction} from 'ethereumjs-tx';
 import Common from 'ethereumjs-common';
 
-export class Key extends WithQuery implements queryProviders.IProviderExtension {
-  private static DEFAULT_HD_PATH = 'm/44\'/60\'/0\'/0';
+export class Key
+  extends WithQuery
+  implements queryProviders.IProviderExtension {
+  private static DEFAULT_HD_PATH = "m/44'/60'/0'/0";
 
   private nonce: number = null;
 
   public static createRandom(query: IQuery = null): Key {
-    return new Key(
-      randomPrivateKey(),
-      query,
-    );
+    return new Key(randomPrivateKey(), query);
   }
 
-  public static createLocalKeyFromMnemonic(mnemonic: string, query: IQuery = null, options: Key.IFromMnemonicOptionsSingle = {}): Key {
+  public static createLocalKeyFromMnemonic(
+    mnemonic: string,
+    query: IQuery = null,
+    options: Key.IFromMnemonicOptionsSingle = {},
+  ): Key {
     options = {
       hdPath: this.DEFAULT_HD_PATH,
       index: 0,
       ...options,
     };
 
-    const {
-      hdPath,
-      password,
-      index,
-    } = options;
+    const {hdPath, password, index} = options;
 
     const [result] = this.createLocalKeysFromMnemonic(mnemonic, query, {
       hdPath,
@@ -58,7 +57,11 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
     return result || null;
   }
 
-  public static createLocalKeysFromMnemonic(mnemonic: string, query: IQuery = null, options: Key.IFromMnemonicOptionsMany = {}): Key[] {
+  public static createLocalKeysFromMnemonic(
+    mnemonic: string,
+    query: IQuery = null,
+    options: Key.IFromMnemonicOptionsMany = {},
+  ): Key[] {
     const result: Key[] = [];
 
     options = {
@@ -68,12 +71,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
       ...options,
     };
 
-    const {
-      hdPath,
-      password,
-      fromIndex,
-      toIndex,
-    } = options;
+    const {hdPath, password, fromIndex, toIndex} = options;
 
     const seed = mnemonicToSeedSync(mnemonic, password);
     const rootHdNode = HDNode.fromMasterSeed(seed);
@@ -82,9 +80,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
       const hdNode = rootHdNode.derive(`${hdPath}/${index}`);
       const privateKey = toHex(hdNode.privateKey);
 
-      result.push(
-        new Key(privateKey, query),
-      );
+      result.push(new Key(privateKey, query));
     }
 
     return result;
@@ -102,13 +98,10 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
         throw new Error('invalid private key');
       }
 
-      this.currentAddress = publicKeyToAddress(
-        privateToPublicKey(privateKey),
-      );
+      this.currentAddress = publicKeyToAddress(privateToPublicKey(privateKey));
 
       this.type = Key.Types.Local;
     } else if (query) {
-
       this.type = Key.Types.Network;
     }
   }
@@ -131,17 +124,11 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
 
     switch (this.type) {
       case Key.Types.Local:
-        result = signPersonalMessage(
-          message,
-          this.privateKey,
-        );
+        result = signPersonalMessage(message, this.privateKey);
         break;
 
       case Key.Types.Network:
-        result = await this.query.eth.sign(
-          this.address,
-          toHex(message),
-        );
+        result = await this.query.eth.sign(this.address, toHex(message));
         break;
 
       default:
@@ -152,30 +139,24 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
   }
 
   public signTypedMessage(message: string): string {
-    return signTypedMessage(
-      message,
-      this.privateKey,
-    );
+    return signTypedMessage(message, this.privateKey);
   }
 
-  public async signTransaction(options: Key.ISignTransactionOptions): Promise<string> {
+  public async signTransaction(
+    options: Key.ISignTransactionOptions,
+  ): Promise<string> {
     let result: string = null;
 
     if (this.type === Key.Types.Local) {
-      const {
-        to,
-        value,
-        data,
-      } = options;
+      const {to, value, data} = options;
 
-      let {
-        nonce,
-        gasPrice,
-        gas,
-      } = options;
+      let {nonce, gasPrice, gas} = options;
 
       if (!nonce) {
-        nonce = await this.query.eth.getTransactionCount(this.address, 'pending');
+        nonce = await this.query.eth.getTransactionCount(
+          this.address,
+          'pending',
+        );
 
         if (this.nonce !== null && this.nonce >= nonce) {
           nonce = this.nonce + 1;
@@ -201,23 +182,30 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
       try {
         common = new Common(chainId, 'istanbul');
       } catch (err) {
-        common = Common.forCustomChain(1, {
-          chainId,
-          networkId,
-          comment: 'Custom chain',
-        }, 'istanbul');
+        common = Common.forCustomChain(
+          1,
+          {
+            chainId,
+            networkId,
+            comment: 'Custom chain',
+          },
+          'istanbul',
+        );
       }
 
-      const transaction = new Transaction({
-        to,
-        nonce: toHex(nonce, '0x00', true),
-        gasLimit: toHex(gas, '0x00', true),
-        gasPrice: toHex(gasPrice, '0x00', true),
-        value: toHex(value, '0x00', true),
-        data: toHex(data, '0x'),
-      }, {
-        common,
-      });
+      const transaction = new Transaction(
+        {
+          to,
+          nonce: toHex(nonce, '0x00', true),
+          gasLimit: toHex(gas, '0x00', true),
+          gasPrice: toHex(gasPrice, '0x00', true),
+          value: toHex(value, '0x00', true),
+          data: toHex(data, '0x'),
+        },
+        {
+          common,
+        },
+      );
 
       transaction.sign(toBuffer(this.privateKey));
 
@@ -243,7 +231,7 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
           let address: string;
           let data: string;
 
-          ([address, data] = params);
+          [address, data] = params;
 
           address = toChecksumAddress(address);
 
@@ -255,20 +243,11 @@ export class Key extends WithQuery implements queryProviders.IProviderExtension 
 
         case queryModules.Eth.Methods.SendTransaction: {
           let options: queryModules.Eth.ISendTransactionOptions;
-          ([options] = params);
+          [options] = params;
 
-          const {
-            from,
-            to,
-            data,
-            value,
-            nonce,
-            gas,
-            gasPrice,
-          } = options;
+          const {from, to, data, value, nonce, gas, gasPrice} = options;
 
           if (from === this.address) {
-
             const raw = await this.signTransaction({
               to,
               nonce,

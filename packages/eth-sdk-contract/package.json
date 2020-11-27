@@ -9,19 +9,20 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/abridged/eth-sdk.git"
+    "url": "https://github.com/abridged/eth-sdk.git",
+    "directory": "packages/eth-sdk-contract"
   },
   "bugs": {
     "url": "https://github.com/abridged/eth-sdk/issues"
   },
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "lint": "tslint --project ./tsconfig.json --exclude ./src/**/*.d.ts ./src/**/*.ts",
-    "clean": "rimraf ./build",
+    "clean": "rimraf ./build *.tsbuildinfo",
     "prebuild": "npm run clean",
     "build": "npm run compile",
-    "compile": "tsc --project ./tsconfig.build.json --rootDir ./src",
+    "compile": "tsc -b",
     "compile-watch": "npm run compile -- --watch --preserveWatchOutput",
     "test": "jest --passWithNoTests",
     "test-watch": "jest --watchAll --passWithNoTests"
@@ -30,21 +31,24 @@
     "@eth-sdk/query": "^0.2.10",
     "@eth-sdk/utils": "^0.2.10",
     "@types/node": "12.12.9",
-    "rxjs": "6.5.3"
+    "rxjs": "^6.6.3"
   },
   "devDependencies": {
-    "@types/jest": "24.0.23",
-    "jest": "24.9.0",
-    "rimraf": "3.0.0",
-    "ts-jest": "24.1.0",
-    "tslint": "5.20.1",
+    "@types/jest": "^26.0.15",
+    "jest": "^26.6.3",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.4.4",
+    "tslint": "^6.1.3",
     "tslint-config-airbnb": "5.11.2",
     "tsutils": "3.17.1",
-    "typescript": "3.7.2"
+    "typescript": "~4.1.2"
   },
   "jest": {
     "verbose": true,
     "preset": "ts-jest",
     "testEnvironment": "node"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

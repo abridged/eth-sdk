@@ -1,10 +1,23 @@
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/utils
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import BN from 'bn.js';
-import { isAddress } from '../address';
-import { isEmpty } from '../helpers';
-import { padHexLeft, toHex, isHex, concatHex, getHexBytesSize, padHexRight, padHex } from '../hex';
-import { parseType } from './sharedHelpers';
-import { TType } from './types';
-import { IEncodedArg } from './interfaces';
+import {isAddress} from '../address';
+import {isEmpty} from '../helpers';
+import {
+  padHexLeft,
+  toHex,
+  isHex,
+  concatHex,
+  getHexBytesSize,
+  padHexRight,
+  padHex,
+} from '../hex';
+import {parseType} from './sharedHelpers';
+import {TType} from './types';
+import {IEncodedArg} from './interfaces';
 
 export function detectArgType(arg: any, noArray = false): TType {
   let result: TType = null;
@@ -39,10 +52,7 @@ export function detectArgType(arg: any, noArray = false): TType {
             if (result) {
               for (let i = 1; i < arg.length; i += 1) {
                 const type = detectArgType(arg[i], true);
-                if (
-                  !type ||
-                  type !== result
-                ) {
+                if (!type || type !== result) {
                   result = null;
                 }
               }
@@ -64,7 +74,11 @@ export function detectArgType(arg: any, noArray = false): TType {
   return result;
 }
 
-function encodeNonArrayArg(mainType: TType, value: any, padBytes = false): string {
+function encodeNonArrayArg(
+  mainType: TType,
+  value: any,
+  padBytes = false,
+): string {
   let result: string = null;
 
   if (mainType === 'uint') {
@@ -86,7 +100,7 @@ function encodeNonArrayArg(mainType: TType, value: any, padBytes = false): strin
       break;
 
     default:
-      const { type, bytes } = parseType(mainType);
+      const {type, bytes} = parseType(mainType);
 
       if (bytes > 0) {
         switch (type) {
@@ -102,7 +116,6 @@ function encodeNonArrayArg(mainType: TType, value: any, padBytes = false): strin
             result = padHexLeft(value, bytes);
             break;
         }
-
       }
   }
 
@@ -112,10 +125,7 @@ function encodeNonArrayArg(mainType: TType, value: any, padBytes = false): strin
 export function encodeArg(arg: IEncodedArg, packed: boolean): string {
   let result: string = null;
 
-  const {
-    type,
-    value,
-  } = arg;
+  const {type, value} = arg;
 
   let innerType: TType = null;
 
@@ -132,7 +142,9 @@ export function encodeArg(arg: IEncodedArg, packed: boolean): string {
       throw new Error('expected array value');
     }
 
-    const encoded = value.map(innerValue => encodeNonArrayArg(innerType, innerValue, true));
+    const encoded = value.map(innerValue =>
+      encodeNonArrayArg(innerType, innerValue, true),
+    );
 
     if (packed) {
       result = concatHex(...encoded);
@@ -142,7 +154,6 @@ export function encodeArg(arg: IEncodedArg, packed: boolean): string {
         concatHex(...encoded.map(value => padHexLeft(value, 32))),
       );
     }
-
   } else {
     result = encodeNonArrayArg(type, value, !packed);
 
@@ -157,7 +168,11 @@ export function encodeArg(arg: IEncodedArg, packed: boolean): string {
           break;
 
         default:
-          result = padHex(result, 32, type.startsWith('bytes') ? 'right' : 'left');
+          result = padHex(
+            result,
+            32,
+            type.startsWith('bytes') ? 'right' : 'left',
+          );
       }
     }
   }

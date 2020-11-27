@@ -1,5 +1,10 @@
-import { BehaviorSubject } from 'rxjs';
-import { IProvider } from './interfaces';
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/query
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
+import {BehaviorSubject} from 'rxjs';
+import {IProvider} from './interfaces';
 
 export class HttpProvider implements IProvider {
   private static detectFetch(option: any = null): any {
@@ -8,12 +13,10 @@ export class HttpProvider implements IProvider {
     if (option) {
       result = option;
     } else {
-      result = (
-        typeof window !== 'undefined' &&
-        typeof window.fetch !== 'undefined'
-      )
-        ? window.fetch.bind(window)
-        : null;
+      result =
+        typeof window !== 'undefined' && typeof window.fetch !== 'undefined'
+          ? window.fetch.bind(window)
+          : null;
     }
 
     if (!result) {
@@ -25,10 +28,7 @@ export class HttpProvider implements IProvider {
 
   private readonly fetch: HttpProvider.TFetch;
 
-  constructor(
-    private endpoint: string,
-    options: HttpProvider.IOptions = {},
-  ) {
+  constructor(private endpoint: string, options: HttpProvider.IOptions = {}) {
     this.fetch = HttpProvider.detectFetch(options.fetch);
   }
 
@@ -37,19 +37,21 @@ export class HttpProvider implements IProvider {
   }
 
   public get notification$(): any {
-    throw new Error('HttpProvider doesn\'t support subscriptions');
+    throw new Error("HttpProvider doesn't support subscriptions");
   }
 
-  public send(request: IProvider.IJsonRpcRequest, callback: IProvider.TCallback): void {
-    this
-      .fetch(this.endpoint, {
-        method: 'POST',
-        cache: 'no-cache',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(request),
-      })
+  public send(
+    request: IProvider.IJsonRpcRequest,
+    callback: IProvider.TCallback,
+  ): void {
+    this.fetch(this.endpoint, {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    })
       .then(res => res.json())
       .then(data => callback(null, data))
       .catch(err => callback(err));
@@ -61,5 +63,8 @@ export namespace HttpProvider {
     fetch?: any;
   }
 
-  export type TFetch = (input?: Request | string, init?: RequestInit) => Promise<Response>;
+  export type TFetch = (
+    input?: Request | string,
+    init?: RequestInit,
+  ) => Promise<Response>;
 }

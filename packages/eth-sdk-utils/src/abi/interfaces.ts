@@ -1,6 +1,11 @@
-import { TType, TItemStateMutability, TItemType } from './types';
+// Copyright Abridged Inc. 2019,2020. All Rights Reserved.
+// Node module: @eth-sdk/utils
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
 
-export interface IEncodedArg<T = any>  {
+import {TType, TItemStateMutability, TItemType} from './types';
+
+export interface IEncodedArg<T = any> {
   type: TType;
   value: T;
 }

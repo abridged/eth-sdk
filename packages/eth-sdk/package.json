@@ -9,19 +9,20 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/abridged/eth-sdk.git"
+    "url": "https://github.com/abridged/eth-sdk.git",
+    "directory": "packages/eth-sdk"
   },
   "bugs": {
     "url": "https://github.com/abridged/eth-sdk/issues"
   },
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "lint": "tslint --project ./tsconfig.json --exclude ./src/**/*.d.ts ./src/**/*.ts",
-    "clean": "rimraf ./build",
+    "clean": "rimraf ./build *.tsbuildinfo",
     "prebuild": "npm run clean",
     "build": "npm run compile",
-    "compile": "tsc --project ./tsconfig.json --rootDir ./src",
+    "compile": "tsc -b",
     "compile-watch": "npm run compile -- --watch --preserveWatchOutput"
   },
   "dependencies": {
@@ -32,10 +33,13 @@
     "@types/node": "12.12.9"
   },
   "devDependencies": {
-    "rimraf": "3.0.0",
+    "rimraf": "^3.0.2",
     "tslint": "5.20.1",
     "tslint-config-airbnb": "5.11.2",
     "tsutils": "3.17.1",
-    "typescript": "3.7.2"
+    "typescript": "~4.1.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
