@@ -130,21 +130,17 @@ export function isHex(
       (type === 'quantity' && length > 2) ||
       (type === 'data' && length % 2 === 0)
     ) {
-      if (type === 'quantity' && value.charCodeAt(2) === 48) {
-        result = length === 3;
-      } else {
-        result = true;
+      result = true;
 
-        for (let i = 2; i < length; i += 1) {
-          const charCode = value.charCodeAt(i);
+      for (let i = 2; i < length; i += 1) {
+        const charCode = value.charCodeAt(i);
 
-          if (
-            !(charCode >= 97 && charCode <= 102) &&
-            !(charCode >= 48 && charCode <= 57)
-          ) {
-            result = false;
-            break;
-          }
+        if (
+          !(charCode >= 97 && charCode <= 102) &&
+          !(charCode >= 48 && charCode <= 57)
+        ) {
+          result = false;
+          break;
         }
       }
     }
